@@ -1,20 +1,24 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { login } from "@/api/auth";
 import { useAuth } from "@/store/auth";
 
-const schema = z.object({
-  userName: z.string().min(1, "Номи корбариро ворид кунед"),
-  password: z.string().min(1, "Паролро ворид кунед"),
-});
-type FormData = z.infer<typeof schema>;
+const makeSchema = (t: TFunction) =>
+  z.object({
+    userName: z.string().min(1, t("login.errUsername")),
+    password: z.string().min(1, t("login.errPassword")),
+  });
+type FormData = z.infer<ReturnType<typeof makeSchema>>;
 
 export default function Login() {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,20 +29,20 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<FormData>({ resolver: zodResolver(useMemo(() => makeSchema(t), [t])) });
 
   const onSubmit = async (values: FormData) => {
     try {
       const { accessToken, refreshToken } = await login(values);
-      if (!accessToken) throw new Error("Токен ёфт нашуд");
+      if (!accessToken) throw new Error(t("login.tokenNotFound"));
       setSession(accessToken, refreshToken);
-      toast.success("Хуш омадед! 👋");
+      toast.success(t("login.welcome"));
       navigate(from, { replace: true });
     } catch (err: any) {
       const msg =
         err?.response?.data?.errors?.join?.("\n") ||
         err?.response?.data?.message ||
-        "Номи корбарӣ ё парол нодуруст аст";
+        t("login.invalid");
       toast.error(msg);
     }
   };
@@ -46,14 +50,14 @@ export default function Login() {
   return (
     <div className="flex min-h-[80vh] w-full items-center justify-center px-4 py-10">
       <div className="flex w-full max-w-[371px] flex-col">
-        <h2 className="mb-6 text-4xl font-medium tracking-wide">Ворид шудан</h2>
-        <p className="mb-12 text-base">Маълумоти худро ворид кунед</p>
+        <h2 className="mb-6 text-4xl font-medium tracking-wide">{t("login.title")}</h2>
+        <p className="mb-12 text-base">{t("login.subtitle")}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
           <div className="relative">
             <input
               {...register("userName")}
-              placeholder="Номи корбарӣ"
+              placeholder={t("login.username")}
               className={field(errors.userName)}
             />
             {errors.userName && <Err>{errors.userName.message}</Err>}
@@ -63,7 +67,7 @@ export default function Login() {
             <input
               type={show ? "text" : "password"}
               {...register("password")}
-              placeholder="Парол"
+              placeholder={t("login.password")}
               className={field(errors.password) + " pr-10"}
             />
             <button
@@ -81,14 +85,14 @@ export default function Login() {
             disabled={isSubmitting}
             className="mt-4 w-full rounded-md bg-brand py-4 font-medium text-white transition-all hover:bg-brand-dark active:scale-[0.99] disabled:opacity-50"
           >
-            {isSubmitting ? "Лутфан интизор шавед..." : "Ворид шудан"}
+            {isSubmitting ? t("login.waiting") : t("login.submit")}
           </button>
         </form>
 
         <div className="mt-8 flex items-center justify-center gap-3 text-base">
-          <span className="text-neutral-500">Ҳисоб надоред?</span>
+          <span className="text-neutral-500">{t("login.noAccount")}</span>
           <Link to="/register" className="border-b border-neutral-400 font-medium hover:text-neutral-600">
-            Бақайдгирӣ
+            {t("login.register")}
           </Link>
         </div>
       </div>

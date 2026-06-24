@@ -73,7 +73,13 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
 - [x] FlashSales: countdown timer + Swiper carousel (`swiper`)
 - [x] Header: underline-и слайдшаванда, анимацияи икона (heart/cart)
 - [x] SectionHead бо хатчаи сурх
-- [ ] боқимонда: i18n (tj/ru/en), dark mode
+- [x] **i18n (tj/ru/en)** — `i18next` + `react-i18next` + language-detector
+      - LanguageSwitcher дар Header (desktop + мобилӣ), сабт дар localStorage
+      - Ҳамаи саҳифаҳо/компонентҳо тарҷума шуданд (Header, Footer, Home, Catalog,
+        Cart, Wishlist, CheckOut, Login, Register, ProductDetail, ProductCard,
+        Hero, FlashSales, PromoBanner, NewArrival, About/Contact/Account/404)
+      - Zod-и валидатсия бо `makeSchema(t)` сезабона шуд
+- [ ] боқимонда: dark mode
 
 ### Phase 7 — Деплой
 
@@ -96,3 +102,4 @@ responsive. Расмҳои воқеӣ (на эмодзӣ). Анимацияи я
 
 ## 📝 Лог
 - **2026-06-24:** Phase 1 + 2. Стек гузошта шуд, API-и softclub васл шуд, каталог/детал/корзинка/wishlist сохта шуд. Build тоза.
+- **2026-06-24:** Анимация AOS → react-awesome-reveal (Reveal.tsx). Сипас **i18n (tj/ru/en)** пурра илова шуд: i18next + LanguageSwitcher, ҳамаи саҳифаҳо тарҷумашуда, Zod бо makeSchema(t). Build тоза.

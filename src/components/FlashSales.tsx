@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -31,6 +32,7 @@ export default function FlashSales({
   products: Product[];
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const [target] = useState(() => Date.now() + 3 * 86400_000 + 23 * 3600_000);
   const { days, hours, minutes, seconds } = useCountdown(target);
   const [prevEl, setPrevEl] = useState<HTMLButtonElement | null>(null);
@@ -40,13 +42,13 @@ export default function FlashSales({
     <section className="mt-16">
       <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div className="flex flex-wrap items-end gap-10">
-          <SectionHead tag="Имрӯз" title="Фурӯши барқӣ" />
+          <SectionHead tag={t("flash.tag")} title={t("flash.title")} />
           <div className="mb-1 hidden items-center gap-5 md:flex">
             {[
-              { l: "Рӯз", v: days },
-              { l: "Соат", v: hours },
-              { l: "Дақиқа", v: minutes },
-              { l: "Сония", v: seconds },
+              { l: t("flash.day"), v: days },
+              { l: t("flash.hour"), v: hours },
+              { l: t("flash.minute"), v: minutes },
+              { l: t("flash.second"), v: seconds },
             ].map((u, i) => (
               <div key={u.l} className="flex items-end gap-5">
                 <div className="flex flex-col items-center">

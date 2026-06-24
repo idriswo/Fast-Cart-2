@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SectionHead from "./SectionHead";
 import Reveal from "./Reveal";
 
@@ -13,6 +14,7 @@ function Tile({
   img: string;
   className?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <Link
       to="/catalog"
@@ -28,7 +30,7 @@ function Tile({
         <h3 className="text-xl font-semibold">{title}</h3>
         <p className="mt-1 max-w-[220px] text-sm text-neutral-200">{text}</p>
         <span className="mt-3 inline-block border-b border-white pb-0.5 text-sm font-medium transition-colors group-hover:border-brand group-hover:text-brand">
-          Харидан
+          {t("newArrival.buy")}
         </span>
       </div>
     </Link>
@@ -36,32 +38,33 @@ function Tile({
 }
 
 export default function NewArrival() {
+  const { t } = useTranslation();
   return (
     <section className="mt-16">
-      <SectionHead tag="Махсус" title="Маҳсулоти нав" />
+      <SectionHead tag={t("newArrival.tag")} title={t("newArrival.title")} />
       <Reveal delay={100} className="mt-8 grid gap-6 md:grid-cols-2">
         <Tile
-          title="PlayStation 5"
-          text="Версияи сиёҳу сафеди PS5 ҳозир дар фурӯш."
+          title={t("newArrival.ps5Title")}
+          text={t("newArrival.ps5Text")}
           img="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=900&auto=format&fit=crop"
           className="min-h-[300px] md:row-span-2"
         />
         <Tile
-          title="Коллексияи занона"
-          text="Маҳсулоти махсус барои занон."
+          title={t("newArrival.womenTitle")}
+          text={t("newArrival.womenText")}
           img="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop"
           className="min-h-[140px]"
         />
         <div className="grid gap-6 sm:grid-cols-2">
           <Tile
-            title="Динамикҳо"
-            text="Динамикҳои бесим."
+            title={t("newArrival.speakersTitle")}
+            text={t("newArrival.speakersText")}
             img="https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=600&auto=format&fit=crop"
             className="min-h-[140px]"
           />
           <Tile
-            title="Атриёт"
-            text="Атриёти боксифат."
+            title={t("newArrival.perfumeTitle")}
+            text={t("newArrival.perfumeText")}
             img="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=600&auto=format&fit=crop"
             className="min-h-[140px]"
           />

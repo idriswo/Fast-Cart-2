@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/store/auth";
 
 /**
@@ -10,10 +11,11 @@ import { useAuth } from "@/store/auth";
 export function useRequireAuth() {
   const isAuth = useAuth((s) => s.isAuthenticated);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (action: () => void) => {
     if (!isAuth) {
-      toast.error("Аввал ба ҳисоб ворид шавед");
+      toast.error(t("common.requireAuth"));
       navigate("/login");
       return;
     }

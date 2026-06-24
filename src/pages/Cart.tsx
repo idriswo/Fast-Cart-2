@@ -1,25 +1,27 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { Button } from "@/components/ui/button";
 import { formatPrice, imageUrl } from "@/lib/utils";
 
 export default function Cart() {
+  const { t } = useTranslation();
   const { items, setQty, remove, total, clear } = useCart();
 
   if (items.length === 0)
     return (
       <div className="container-x py-20 text-center">
-        <p className="text-lg text-neutral-500">Корзинкаи шумо холӣ аст 🛒</p>
+        <p className="text-lg text-neutral-500">{t("cart.empty")}</p>
         <Link to="/catalog">
-          <Button className="mt-6">Ба харид гузаред</Button>
+          <Button className="mt-6">{t("cart.goShopping")}</Button>
         </Link>
       </div>
     );
 
   return (
     <div className="container-x py-10">
-      <h1 className="mb-8 text-2xl font-bold md:text-3xl">Корзинка</h1>
+      <h1 className="mb-8 text-2xl font-bold md:text-3xl">{t("cart.title")}</h1>
 
       <div className="space-y-4">
         {items.map((i) => {
@@ -57,13 +59,13 @@ export default function Cart() {
 
       <div className="mt-8 flex flex-col items-end gap-4">
         <div className="flex w-full max-w-xs justify-between border-t pt-4 text-lg font-bold">
-          <span>Ҳамагӣ:</span>
+          <span>{t("cart.total")}</span>
           <span className="text-brand">{formatPrice(total())}</span>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" onClick={clear}>Тоза кардан</Button>
+          <Button variant="outline" onClick={clear}>{t("cart.clear")}</Button>
           <Link to="/checkout">
-            <Button>Расмигардонии фармоиш</Button>
+            <Button>{t("cart.checkout")}</Button>
           </Link>
         </div>
       </div>

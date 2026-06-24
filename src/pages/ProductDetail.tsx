@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Heart, Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
 import { getProductById } from "@/api/products";
 import type { Product } from "@/types";
@@ -11,6 +12,7 @@ import { useRequireAuth } from "@/hooks/useRequireAuth";
 import toast from "react-hot-toast";
 
 export default function ProductDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,9 +41,9 @@ export default function ProductDetail() {
   if (!product)
     return (
       <div className="container-x py-20 text-center">
-        <p className="text-neutral-500">Маҳсулот ёфт нашуд.</p>
+        <p className="text-neutral-500">{t("product.notFound")}</p>
         <Link to="/catalog" className="mt-4 inline-block text-brand underline">
-          Бозгашт ба каталог
+          {t("product.backToCatalog")}
         </Link>
       </div>
     );
@@ -51,7 +53,7 @@ export default function ProductDetail() {
   return (
     <div className="container-x py-10">
       <Link to="/catalog" className="mb-6 inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-black">
-        <ArrowLeft size={16} /> Бозгашт ба каталог
+        <ArrowLeft size={16} /> {t("product.backToCatalog")}
       </Link>
 
       <div className="grid gap-10 md:grid-cols-2">
@@ -77,12 +79,12 @@ export default function ProductDetail() {
           </div>
 
           <p className="mt-4 text-sm">
-            Ранг: <span className="font-medium">{product.color}</span>
+            {t("product.color")} <span className="font-medium">{product.color}</span>
           </p>
           <p className="mt-1 text-sm">
-            Дар анбор:{" "}
+            {t("product.inStock")}{" "}
             <span className={product.quantity > 0 ? "text-green-600" : "text-brand"}>
-              {product.quantity > 0 ? `${product.quantity} дона` : "Нест"}
+              {product.quantity > 0 ? t("product.pcs", { count: product.quantity }) : t("product.outOfStock")}
             </span>
           </p>
 
@@ -101,12 +103,12 @@ export default function ProductDetail() {
               onClick={() =>
                 requireAuth(() => {
                   for (let i = 0; i < qty; i++) add(product);
-                  toast.success("Ба корзинка илова шуд");
+                  toast.success(t("common.addedToCart"));
                 })
               }
               className="flex-1"
             >
-              <ShoppingCart size={18} /> Ба корзинка
+              <ShoppingCart size={18} /> {t("product.addToCart")}
             </Button>
 
             <Button

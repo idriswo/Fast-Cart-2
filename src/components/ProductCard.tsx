@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Eye, Heart, ShoppingCart } from "lucide-react";
 import type { Product } from "@/types";
 import { cn, formatPrice, imageUrl } from "@/lib/utils";
@@ -14,6 +15,7 @@ export default function ProductCard({
   product: Product;
   index?: number;
 }) {
+  const { t } = useTranslation();
   const add = useCart((s) => s.add);
   const toggle = useWishlist((s) => s.toggle);
   const liked = useWishlist((s) => s.has(product.id));
@@ -40,7 +42,7 @@ export default function ProductCard({
         <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
           <button
             onClick={() => requireAuth(() => toggle(product))}
-            aria-label="Дӯстдошта"
+            aria-label={t("card.wishlist")}
             className={cn(
               "grid h-8 w-8 place-items-center rounded-full bg-white shadow-sm transition-colors duration-200",
               liked ? "text-brand" : "text-neutral-700 hover:bg-brand hover:text-white"
@@ -50,7 +52,7 @@ export default function ProductCard({
           </button>
           <Link
             to={`/product/${product.id}`}
-            aria-label="Дидан"
+            aria-label={t("card.view")}
             className="grid h-8 w-8 place-items-center rounded-full bg-white text-neutral-700 shadow-sm transition-colors duration-200 hover:bg-black hover:text-white"
           >
             <Eye size={16} />
@@ -70,12 +72,12 @@ export default function ProductCard({
           onClick={() =>
             requireAuth(() => {
               add(product);
-              toast.success("Ба корзинка илова шуд");
+              toast.success(t("common.addedToCart"));
             })
           }
           className="absolute bottom-0 left-0 right-0 flex translate-y-full items-center justify-center gap-2 bg-black py-2.5 text-sm font-medium text-white transition-transform duration-300 group-hover:translate-y-0"
         >
-          <ShoppingCart size={16} /> Ба корзинка
+          <ShoppingCart size={16} /> {t("card.addToCart")}
         </button>
       </div>
 

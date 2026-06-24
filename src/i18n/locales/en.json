@@ -15,6 +15,18 @@
     "menu": "Menu",
     "close": "Close"
   },
+  "hero": {
+    "shopNow": "Shop now",
+    "slide": "Slide {{n}}",
+    "s1Tag": "iPhone 15 Series",
+    "s1Title": "Up to 10% off with voucher",
+    "s2Tag": "Samsung Galaxy AI",
+    "s2Title": "A new era of Galaxy",
+    "s3Tag": "MacBook Pro M3",
+    "s3Title": "Astonishing performance",
+    "s4Tag": "Sony WH-1000XM5",
+    "s4Title": "Your world. Nothing else"
+  },
   "home": {
     "categoriesTag": "Categories",
     "categoriesTitle": "Browse by category",

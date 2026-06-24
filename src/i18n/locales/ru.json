@@ -15,6 +15,18 @@
     "menu": "Меню",
     "close": "Закрыть"
   },
+  "hero": {
+    "shopNow": "Купить сейчас",
+    "slide": "Слайд {{n}}",
+    "s1Tag": "Серия iPhone 15",
+    "s1Title": "Скидка до 10% по ваучеру",
+    "s2Tag": "Samsung Galaxy AI",
+    "s2Title": "Новая эра Galaxy",
+    "s3Tag": "MacBook Pro M3",
+    "s3Title": "Поразительная производительность",
+    "s4Tag": "Sony WH-1000XM5",
+    "s4Title": "Ваш мир. И больше ничего"
+  },
   "home": {
     "categoriesTag": "Категории",
     "categoriesTitle": "Искать по категориям",

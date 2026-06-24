@@ -1,35 +1,37 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowRight } from "lucide-react";
 
 const SLIDES = [
   {
-    tag: "Серияи iPhone 15",
-    title: "То 10% тахфиф бо ваучер",
+    tagKey: "hero.s1Tag",
+    titleKey: "hero.s1Title",
     img: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=800&auto=format&fit=crop",
     link: "/catalog",
   },
   {
-    tag: "Samsung Galaxy AI",
-    title: "Давраи нави Galaxy",
+    tagKey: "hero.s2Tag",
+    titleKey: "hero.s2Title",
     img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=800&auto=format&fit=crop",
     link: "/catalog",
   },
   {
-    tag: "MacBook Pro M3",
-    title: "Иҷроиши ҳайратангез",
+    tagKey: "hero.s3Tag",
+    titleKey: "hero.s3Title",
     img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop",
     link: "/catalog",
   },
   {
-    tag: "Sony WH-1000XM5",
-    title: "Ҷаҳони шумо. Дигар ҳеҷ",
+    tagKey: "hero.s4Tag",
+    titleKey: "hero.s4Title",
     img: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=800&auto=format&fit=crop",
     link: "/catalog",
   },
 ];
 
 export default function Hero() {
+  const { t } = useTranslation();
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -54,15 +56,15 @@ export default function Hero() {
             }`}
           >
             <div className="z-10 flex flex-1 flex-col items-start text-left">
-              <p className="mb-4 text-sm tracking-wide text-neutral-300">{slide.tag}</p>
+              <p className="mb-4 text-sm tracking-wide text-neutral-300">{t(slide.tagKey)}</p>
               <h2 className="mb-6 max-w-[360px] text-3xl font-bold leading-snug tracking-tight md:text-5xl">
-                {slide.title}
+                {t(slide.titleKey)}
               </h2>
               <Link
                 to={slide.link}
                 className="group/btn flex items-center gap-2 border-b border-neutral-400 pb-1 text-base font-medium transition-all duration-300 hover:border-brand hover:text-brand"
               >
-                Ҳозир харид кунед
+                {t("hero.shopNow")}
                 <ArrowRight
                   size={18}
                   className="transition-transform duration-300 group-hover/btn:translate-x-1"
@@ -72,7 +74,7 @@ export default function Hero() {
             <div className="flex flex-1 items-center justify-center">
               <img
                 src={slide.img}
-                alt={slide.tag}
+                alt={t(slide.tagKey)}
                 className="max-h-[140px] w-auto rounded-xl object-cover shadow-2xl md:max-h-[260px]"
               />
             </div>
@@ -85,7 +87,7 @@ export default function Hero() {
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            aria-label={`Слайди ${i + 1}`}
+            aria-label={t("hero.slide", { n: i + 1 })}
             className={`rounded-full transition-all duration-300 ${
               i === current
                 ? "h-3 w-3 scale-110 border-2 border-white bg-brand"

@@ -1,38 +1,43 @@
+import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { register as registerApi } from "@/api/auth";
 
-const schema = z
-  .object({
-    name: z.string().min(2, "Ном камаш 2 ҳарф"),
-    email: z.string().email("Email нодуруст"),
-    countryCode: z.string(),
-    phone: z
-      .string()
-      .regex(/^\d+$/, "Танҳо рақамҳо")
-      .min(7, "Камаш 7 рақам")
-      .max(15, "Зиёда аз 15 рақам не"),
-    password: z.string().min(6, "Парол камаш 6 ҳарф"),
-    confirmPassword: z.string(),
-  })
-  .refine((d) => d.password === d.confirmPassword, {
-    message: "Паролҳо мувофиқат намекунанд",
-    path: ["confirmPassword"],
-  });
+const makeSchema = (t: TFunction) =>
+  z
+    .object({
+      name: z.string().min(2, t("register.errName")),
+      email: z.string().email(t("register.errEmail")),
+      countryCode: z.string(),
+      phone: z
+        .string()
+        .regex(/^\d+$/, t("register.errPhoneDigits"))
+        .min(7, t("register.errPhoneMin"))
+        .max(15, t("register.errPhoneMax")),
+      password: z.string().min(6, t("register.errPassword")),
+      confirmPassword: z.string(),
+    })
+    .refine((d) => d.password === d.confirmPassword, {
+      message: t("register.errMatch"),
+      path: ["confirmPassword"],
+    });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<ReturnType<typeof makeSchema>>;
 
 export default function Register() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(useMemo(() => makeSchema(t), [t])),
     defaultValues: { countryCode: "+992" },
   });
 
@@ -45,7 +50,7 @@ export default function Register() {
         password: v.password,
         confirmPassword: v.confirmPassword,
       });
-      toast.success("Бақайдгирӣ муваффақ! Акнун ворид шавед");
+      toast.success(t("register.success"));
       navigate("/login");
     } catch (err: any) {
       const data = err?.response?.data?.errors;
@@ -53,7 +58,7 @@ export default function Register() {
         ? Array.isArray(data)
           ? data.join("\n")
           : Object.values(data).flat().join("\n")
-        : "Ҳангоми бақайдгирӣ хато рух дод";
+        : t("register.error");
       toast.error(msg);
     }
   };
@@ -61,17 +66,17 @@ export default function Register() {
   return (
     <div className="flex min-h-[80vh] w-full items-center justify-center px-4 py-10">
       <div className="flex w-full max-w-[371px] flex-col">
-        <h2 className="mb-6 text-4xl font-medium tracking-wide">Эҷоди ҳисоб</h2>
-        <p className="mb-12 text-base">Маълумоти худро ворид кунед</p>
+        <h2 className="mb-6 text-4xl font-medium tracking-wide">{t("register.title")}</h2>
+        <p className="mb-12 text-base">{t("register.subtitle")}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
           <div className="relative">
-            <input {...register("name")} placeholder="Ном" className={field(errors.name)} />
+            <input {...register("name")} placeholder={t("register.name")} className={field(errors.name)} />
             {errors.name && <Err>{errors.name.message}</Err>}
           </div>
 
           <div className="relative">
-            <input {...register("email")} placeholder="Email" className={field(errors.email)} />
+            <input {...register("email")} placeholder={t("register.email")} className={field(errors.email)} />
             {errors.email && <Err>{errors.email.message}</Err>}
           </div>
 
@@ -90,7 +95,7 @@ export default function Register() {
               </select>
               <input
                 {...register("phone")}
-                placeholder="Рақами телефон"
+                placeholder={t("register.phone")}
                 className="w-full bg-transparent text-base outline-none placeholder:text-neutral-400"
               />
             </div>
@@ -101,7 +106,7 @@ export default function Register() {
             <input
               type="password"
               {...register("password")}
-              placeholder="Парол"
+              placeholder={t("register.password")}
               className={field(errors.password)}
             />
             {errors.password && <Err>{errors.password.message}</Err>}
@@ -111,7 +116,7 @@ export default function Register() {
             <input
               type="password"
               {...register("confirmPassword")}
-              placeholder="Тасдиқи парол"
+              placeholder={t("register.confirmPassword")}
               className={field(errors.confirmPassword)}
             />
             {errors.confirmPassword && <Err>{errors.confirmPassword.message}</Err>}
@@ -122,14 +127,14 @@ export default function Register() {
             disabled={isSubmitting}
             className="mt-4 w-full rounded-md bg-brand py-4 font-medium text-white transition-all hover:bg-brand-dark active:scale-[0.99] disabled:opacity-50"
           >
-            {isSubmitting ? "Лутфан интизор шавед..." : "Эҷоди ҳисоб"}
+            {isSubmitting ? t("register.waiting") : t("register.submit")}
           </button>
         </form>
 
         <div className="mt-8 flex items-center justify-center gap-3 text-base">
-          <span className="text-neutral-500">Аллакай ҳисоб доред?</span>
+          <span className="text-neutral-500">{t("register.haveAccount")}</span>
           <Link to="/login" className="border-b border-neutral-400 font-medium hover:text-neutral-600">
-            Ворид шудан
+            {t("register.login")}
           </Link>
         </div>
       </div>

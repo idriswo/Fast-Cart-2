@@ -15,6 +15,18 @@
     "menu": "Меню",
     "close": "Пӯшидан"
   },
+  "hero": {
+    "shopNow": "Ҳозир харид кунед",
+    "slide": "Слайди {{n}}",
+    "s1Tag": "Серияи iPhone 15",
+    "s1Title": "То 10% тахфиф бо ваучер",
+    "s2Tag": "Samsung Galaxy AI",
+    "s2Title": "Давраи нави Galaxy",
+    "s3Tag": "MacBook Pro M3",
+    "s3Title": "Иҷроиши ҳайратангез",
+    "s4Tag": "Sony WH-1000XM5",
+    "s4Title": "Ҷаҳони шумо. Дигар ҳеҷ"
+  },
   "home": {
     "categoriesTag": "Категорияҳо",
     "categoriesTitle": "Аз рӯи категория ҷустуҷӯ кунед",

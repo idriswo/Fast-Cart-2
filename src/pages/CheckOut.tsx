@@ -1,28 +1,31 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { CheckCircle2 } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { Button } from "@/components/ui/button";
 import { formatPrice, imageUrl } from "@/lib/utils";
 
-const schema = z.object({
-  firstName: z.string().min(2, "Ном камаш 2 ҳарф"),
-  lastName: z.string().min(2, "Насаб камаш 2 ҳарф"),
-  phone: z
-    .string()
-    .regex(/^\+?\d[\d\s-]{7,}$/, "Рақами телефон нодуруст"),
-  city: z.string().min(2, "Шаҳрро ворид кунед"),
-  address: z.string().min(5, "Суроғаро пурра ворид кунед"),
-  payment: z.enum(["cash", "card"]),
-  note: z.string().optional(),
-});
+const makeSchema = (t: TFunction) =>
+  z.object({
+    firstName: z.string().min(2, t("checkout.errFirstName")),
+    lastName: z.string().min(2, t("checkout.errLastName")),
+    phone: z.string().regex(/^\+?\d[\d\s-]{7,}$/, t("checkout.errPhone")),
+    city: z.string().min(2, t("checkout.errCity")),
+    address: z.string().min(5, t("checkout.errAddress")),
+    payment: z.enum(["cash", "card"]),
+    note: z.string().optional(),
+  });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<ReturnType<typeof makeSchema>>;
 
 export default function CheckOut() {
+  const { t } = useTranslation();
+  const schema = useMemo(() => makeSchema(t), [t]);
   const { items, total, clear } = useCart();
   const navigate = useNavigate();
   const [done, setDone] = useState(false);
@@ -40,12 +43,10 @@ export default function CheckOut() {
     return (
       <div className="container-x flex flex-col items-center py-24 text-center">
         <CheckCircle2 size={72} className="text-green-500" />
-        <h1 className="mt-6 text-2xl font-bold">Фармоиш қабул шуд! 🎉</h1>
-        <p className="mt-2 text-neutral-500">
-          Ба зудӣ оператори мо бо шумо тамос мегирад.
-        </p>
+        <h1 className="mt-6 text-2xl font-bold">{t("checkout.done")}</h1>
+        <p className="mt-2 text-neutral-500">{t("checkout.doneText")}</p>
         <Link to="/catalog">
-          <Button className="mt-8">Идомаи харид</Button>
+          <Button className="mt-8">{t("checkout.continueShopping")}</Button>
         </Link>
       </div>
     );
@@ -53,9 +54,9 @@ export default function CheckOut() {
   if (items.length === 0)
     return (
       <div className="container-x py-20 text-center">
-        <p className="text-neutral-500">Корзинка холӣ аст.</p>
+        <p className="text-neutral-500">{t("checkout.emptyCart")}</p>
         <Link to="/catalog">
-          <Button className="mt-6">Ба каталог</Button>
+          <Button className="mt-6">{t("checkout.toCatalog")}</Button>
         </Link>
       </div>
     );
@@ -70,7 +71,7 @@ export default function CheckOut() {
 
   return (
     <div className="container-x py-10">
-      <h1 className="mb-8 text-2xl font-bold md:text-3xl">Расмигардонии фармоиш</h1>
+      <h1 className="mb-8 text-2xl font-bold md:text-3xl">{t("checkout.title")}</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -79,46 +80,46 @@ export default function CheckOut() {
         {/* Форма */}
         <div className="space-y-5">
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Ном" error={errors.firstName?.message}>
+            <Field label={t("checkout.firstName")} error={errors.firstName?.message}>
               <input className={inp} {...register("firstName")} />
             </Field>
-            <Field label="Насаб" error={errors.lastName?.message}>
+            <Field label={t("checkout.lastName")} error={errors.lastName?.message}>
               <input className={inp} {...register("lastName")} />
             </Field>
           </div>
 
-          <Field label="Телефон" error={errors.phone?.message}>
+          <Field label={t("checkout.phone")} error={errors.phone?.message}>
             <input className={inp} placeholder="+992 ..." {...register("phone")} />
           </Field>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Шаҳр" error={errors.city?.message}>
+            <Field label={t("checkout.city")} error={errors.city?.message}>
               <input className={inp} {...register("city")} />
             </Field>
-            <Field label="Суроға" error={errors.address?.message}>
+            <Field label={t("checkout.address")} error={errors.address?.message}>
               <input className={inp} {...register("address")} />
             </Field>
           </div>
 
-          <Field label="Тарзи пардохт">
+          <Field label={t("checkout.payment")}>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 text-sm">
-                <input type="radio" value="cash" {...register("payment")} /> Нақд
+                <input type="radio" value="cash" {...register("payment")} /> {t("checkout.cash")}
               </label>
               <label className="flex items-center gap-2 text-sm">
-                <input type="radio" value="card" {...register("payment")} /> Корти бонкӣ
+                <input type="radio" value="card" {...register("payment")} /> {t("checkout.card")}
               </label>
             </div>
           </Field>
 
-          <Field label="Эзоҳ (ихтиёрӣ)">
+          <Field label={t("checkout.note")}>
             <textarea rows={3} className={inp} {...register("note")} />
           </Field>
         </div>
 
         {/* Хулоса */}
         <aside className="h-fit rounded-md border p-6">
-          <h3 className="mb-4 font-semibold">Фармоиши шумо</h3>
+          <h3 className="mb-4 font-semibold">{t("checkout.yourOrder")}</h3>
           <div className="space-y-3">
             {items.map((i) => {
               const price = i.hasDiscount ? i.discountPrice : i.price;
@@ -137,11 +138,11 @@ export default function CheckOut() {
             })}
           </div>
           <div className="mt-4 flex justify-between border-t pt-4 text-lg font-bold">
-            <span>Ҳамагӣ:</span>
+            <span>{t("checkout.total")}</span>
             <span className="text-brand">{formatPrice(total())}</span>
           </div>
           <Button type="submit" className="mt-6 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Фиристода истодааст..." : "Тасдиқи фармоиш"}
+            {isSubmitting ? t("checkout.submitting") : t("checkout.confirm")}
           </Button>
         </aside>
       </form>

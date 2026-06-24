@@ -151,7 +151,7 @@ export default function Header() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Ҷустуҷӯи маҳсулот..."
+              placeholder={t("header.searchPlaceholder")}
               className="h-10 w-full rounded-md bg-soft pl-4 pr-9 text-sm outline-none"
             />
             <button type="submit" className="absolute right-2.5 top-2.5 text-neutral-500">

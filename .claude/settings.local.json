@@ -9,7 +9,15 @@
       "Bash(echo 'node_modules/ *)",
       "PowerShell(Get-Content *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\USER\\\\Desktop\\\\Fast Cart 2\\\\index.html\")",
+      "PowerShell($s = Get-Content \"C:\\\\Users\\\\USER\\\\Desktop\\\\FastCard\\\\swagger.json\" -Raw | ConvertFrom-Json; \"BASE PATHS:\"; $s.paths.PSObject.Properties.Name | Sort-Object)",
+      "PowerShell(try { $r = Invoke-RestMethod -Uri \"https://store-api.softclub.tj/api/Product/get-products?PageNumber=1&PageSize=2\" -Method Get; $r | ConvertTo-Json -Depth 6 } catch { \"ERR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(Get-Content \"C:\\\\Users\\\\USER\\\\Desktop\\\\FastCard\\\\fastcard\\\\.env\" -Raw; \"---API.ts---\"; Get-Content \"C:\\\\Users\\\\USER\\\\Desktop\\\\FastCard\\\\fastcard\\\\src\\\\services\\\\api.ts\" -Raw)",
+      "Bash(npm install *)",
+      "Bash(grep -E \"^\\(react|vite|zustand|axios|tailwindcss\\)$\")",
+      "Bash(npm run *)",
+      "PowerShell(Start-Process \"http://localhost:5174/\")"
     ]
   }
 }

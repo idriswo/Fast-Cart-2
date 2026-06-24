@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Loader2, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { getCategories, getProducts } from "@/api/products";
 import type { Brand, Category, Color, Product } from "@/types";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 
@@ -171,8 +172,10 @@ export default function Catalog() {
         {/* Рӯйхати маҳсулот */}
         <section className="flex-1">
           {loading ? (
-            <div className="flex h-64 items-center justify-center text-neutral-400">
-              <Loader2 className="animate-spin" />
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
             </div>
           ) : products.length === 0 ? (
             <div className="flex h-64 flex-col items-center justify-center text-neutral-400">
@@ -184,8 +187,8 @@ export default function Catalog() {
           ) : (
             <>
               <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
-                {products.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                {products.map((p, i) => (
+                  <ProductCard key={p.id} product={p} index={i} />
                 ))}
               </div>
 

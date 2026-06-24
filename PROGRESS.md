@@ -53,20 +53,40 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
 - [x] Header: намоиши корбар + тугмаи баромад; саҳифаи Профил
 - [x] Бо API-и воқеӣ санҷида шуд: register+login+JWT кор мекунад ✅
 
-### Phase 5 — Панели фурушанда (add-product и ғ.)
-### Phase 6 — Сайқал: i18n (tj/ru/en), dark mode, skeleton loaders
+### Phase 5 — Панели фурушанда ❌ (хориҷ карда шуд)
+- Аввал сохта шуд, вале аз тарафи клиент **тоза карда шуд** (бо хоҳиши корбар).
+- Сабаб: панели админӣ набояд дар client-side бошад. Файлҳои Seller/api нест шуданд.
+
+### Phase 5.5 — Responsive + дизайни Ecommerce ✅
+- [x] Намунаи дизайн: `C:\Users\USER\Desktop\Ecommerce (1)` (Exclusive template)
+- [x] Header-и мобилӣ: hamburger + drawer (ҷустуҷӯ + меню), responsive
+- [x] PromoBanner («Аз мусиқӣ лаззат баред» + countdown + сабз)
+- [x] NewArrival (мозаикаи 4-катак)
+- [x] Санҷида шуд: режими desktop (1280) ва мобилӣ (390) — ҳар ду аъло
+
+### Phase 6 — Дизайн ва анимация ✅ (қисман)
+- [x] AOS scroll animations (fade-up/right/left, zoom-in) — `aos`
+- [x] Skeleton loaders (shimmer) дар Home ва Catalog
+- [x] ProductCard айни FastCard: slide-up add-to-cart, тугмаҳои амудӣ (heart+eye),
+      mix-blend image, hover scale, рейтинги ситора, hover-и сурх
+- [x] Hero carousel-и худгардон (4 слайд, dot-ҳои сурх)
+- [x] FlashSales: countdown timer + Swiper carousel (`swiper`)
+- [x] Header: underline-и слайдшаванда, анимацияи икона (heart/cart)
+- [x] SectionHead бо хатчаи сурх
+- [ ] боқимонда: i18n (tj/ru/en), dark mode
+
 ### Phase 7 — Деплой
 
 ---
 
 ## 📌 Ҳолати ҳозира
-Phase 4 тамом — авторизатсияи пурра бо JWT кор мекунад. Бе login сайт амалҳои харидро
-намедиҳад. Build тоза. Dev: `npm run dev`.
+Сайти пурра: каталог, авторизатсия, корзинка, checkout, дизайни Ecommerce/Exclusive,
+responsive (desktop + мобилӣ бо hamburger). Панели Seller аз клиент хориҷ карда шуд.
+`container-x` max-width = 1400px. Build тоза. Dev: `npm run dev`.
 
 ## ➡️ Қадами навбатӣ
-- Phase 5: Панели фурушанда (add/update/delete product, бо нақши Seller).
-- Phase 6: i18n (tj/ru/en), dark mode, skeleton loaders.
-- Push-и аввал ба GitHub (ҳангоми /stop).
+- Phase 6 (боқимонда): i18n (tj/ru/en), dark mode.
+- Phase 7: Деплой.
 
 ## 📝 Лог
 - **2026-06-24:** Phase 1 + 2. Стек гузошта шуд, API-и softclub васл шуд, каталог/детал/корзинка/wishlist сохта шуд. Build тоза.

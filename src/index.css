@@ -20,5 +20,42 @@
 
 /* utility helpers */
 .container-x {
-  @apply max-w-[1200px] mx-auto px-4 md:px-6;
+  @apply max-w-[1400px] mx-auto px-4 md:px-6;
 }
+
+/* ===== Анимацияҳои классикӣ ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Skeleton shimmer — назардиҳии касбӣ */
+@keyframes shimmer {
+  0% { background-position: -468px 0; }
+  100% { background-position: 468px 0; }
+}
+.skeleton {
+  background: #eaeaea;
+  background-image: linear-gradient(
+    90deg,
+    #eaeaea 0px,
+    #f4f4f4 40px,
+    #eaeaea 80px
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+
+/* Swiper navigation tozakunī */
+.swiper { padding-bottom: 4px; }
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev { display: none; }

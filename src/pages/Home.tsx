@@ -1,19 +1,31 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Headphones, ShieldCheck, Truck } from "lucide-react";
+import { Headphones, ShieldCheck, Truck } from "lucide-react";
 import { getCategories, getProducts } from "@/api/products";
 import type { Category, Product } from "@/types";
+import Hero from "@/components/Hero";
+import FlashSales from "@/components/FlashSales";
+import PromoBanner from "@/components/PromoBanner";
+import NewArrival from "@/components/NewArrival";
+import SectionHead from "@/components/SectionHead";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { imageUrl } from "@/lib/utils";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingP, setLoadingP] = useState(true);
+  const [loadingC, setLoadingC] = useState(true);
 
   useEffect(() => {
-    getProducts({ PageSize: 8 }).then((r) => setProducts(r.data.products ?? []));
-    getCategories().then(setCategories);
+    getProducts({ PageSize: 12 })
+      .then((r) => setProducts(r.data.products ?? []))
+      .finally(() => setLoadingP(false));
+    getCategories()
+      .then(setCategories)
+      .finally(() => setLoadingC(false));
   }, []);
 
   return (
@@ -21,87 +33,90 @@ export default function Home() {
       {/* Hero */}
       <section className="mt-8 flex flex-col gap-8 md:flex-row">
         <aside className="hidden w-60 shrink-0 flex-col gap-3 border-r pr-4 md:flex">
-          {categories.slice(0, 8).map((c) => (
-            <Link
-              key={c.id}
-              to={`/catalog?category=${c.id}`}
-              className="text-[15px] hover:text-brand hover:pl-1 transition-all"
-            >
-              {c.categoryName}
-            </Link>
-          ))}
+          {(loadingC ? Array.from({ length: 6 }) : categories.slice(0, 8)).map(
+            (c: any, i) =>
+              loadingC ? (
+                <div key={i} className="skeleton h-5 w-32" />
+              ) : (
+                <Link
+                  key={c.id}
+                  to={`/catalog?category=${c.id}`}
+                  className="text-[15px] transition-all hover:pl-1 hover:text-brand"
+                >
+                  {c.categoryName}
+                </Link>
+              )
+          )}
         </aside>
-
-        <div className="flex flex-1 items-center justify-between rounded bg-black px-10 py-14 text-white">
-          <div>
-            <p className="mb-4 text-sm text-neutral-300">Серияи нав</p>
-            <h1 className="max-w-md text-4xl font-bold leading-tight md:text-5xl">
-              Маҳсулоти техникӣ бо нархи беҳтарин
-            </h1>
-            <Link to="/catalog">
-              <Button variant="dark" className="mt-7 border-b border-white pb-1 px-0 hover:bg-transparent">
-                Ҳозир харид кунед <ArrowRight size={18} />
-              </Button>
-            </Link>
-          </div>
-          <div className="hidden text-7xl md:block">🛒</div>
+        <div className="flex-1" data-aos="fade-left">
+          <Hero />
         </div>
       </section>
+
+      {/* Flash Sales */}
+      <FlashSales products={products} loading={loadingP} />
+
+      <div className="my-12 h-px bg-neutral-200" />
 
       {/* Категорияҳо */}
-      <section className="mt-20">
+      <section className="mt-4">
         <SectionHead tag="Категорияҳо" title="Аз рӯи категория ҷустуҷӯ кунед" />
-        <div className="grid grid-cols-3 gap-4 md:grid-cols-6">
-          {categories.map((c) => (
-            <Link
-              key={c.id}
-              to={`/catalog?category=${c.id}`}
-              className="flex h-32 flex-col items-center justify-center gap-3 rounded-md border transition-colors hover:bg-brand hover:text-white"
-            >
-              <img
-                src={imageUrl(c.categoryImage)}
-                alt={c.categoryName}
-                className="h-12 w-12 object-contain"
-              />
-              <span className="text-sm font-medium">{c.categoryName}</span>
-            </Link>
-          ))}
+        <div className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6">
+          {loadingC
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="skeleton h-32 rounded-md" />
+              ))
+            : categories.map((c, i) => (
+                <Link
+                  key={c.id}
+                  to={`/catalog?category=${c.id}`}
+                  data-aos="zoom-in"
+                  data-aos-delay={(i % 6) * 80}
+                  className="flex h-32 flex-col items-center justify-center gap-3 rounded-md border transition-all duration-300 hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-white hover:shadow-lg"
+                >
+                  <img
+                    src={imageUrl(c.categoryImage)}
+                    alt={c.categoryName}
+                    className="h-12 w-12 object-contain"
+                  />
+                  <span className="text-sm font-medium">{c.categoryName}</span>
+                </Link>
+              ))}
         </div>
       </section>
 
+      {/* Promo banner */}
+      <PromoBanner />
+
       {/* Маҳсулоти беҳтарин */}
-      <section className="mt-20">
-        <div className="flex items-end justify-between">
-          <SectionHead tag="Маҳсулот" title="Маҳсулоти беҳтарин" />
+      <section className="mt-16">
+        <div className="mb-8 flex items-end justify-between">
+          <SectionHead tag="Ин моҳ" title="Маҳсулоти беҳтарин" />
           <Link to="/catalog">
-            <Button variant="outline" size="sm">Ҳама</Button>
+            <Button>Дидани ҳама</Button>
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+          {loadingP
+            ? Array.from({ length: 4 }).map((_, i) => <ProductCardSkeleton key={i} />)
+            : products
+                .slice(0, 8)
+                .map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
       </section>
 
+      {/* New Arrival */}
+      <NewArrival />
+
       {/* Хизматрасониҳо */}
-      <section className="my-24 flex flex-col items-center justify-center gap-16 md:flex-row">
+      <section
+        className="my-24 flex flex-col items-center justify-center gap-16 md:flex-row"
+        data-aos="fade-up"
+      >
         <Service icon={<Truck />} title="Расонидани ройгон" text="Барои харидҳои аз 500 сомонӣ" />
         <Service icon={<Headphones />} title="Дастгирии 24/7" text="Хизматрасонии доимии муштарӣ" />
         <Service icon={<ShieldCheck />} title="Кафолати баргардонидан" text="Баргардонидани пул дар 30 рӯз" />
       </section>
-    </div>
-  );
-}
-
-function SectionHead({ tag, title }: { tag: string; title: string }) {
-  return (
-    <div className="mb-8">
-      <div className="mb-3 flex items-center gap-3">
-        <span className="h-8 w-4 rounded bg-brand" />
-        <span className="font-semibold text-brand">{tag}</span>
-      </div>
-      <h2 className="text-2xl font-bold md:text-3xl">{title}</h2>
     </div>
   );
 }
@@ -116,7 +131,7 @@ function Service({
   text: string;
 }) {
   return (
-    <div className="text-center">
+    <div className="text-center transition-transform duration-300 hover:-translate-y-1">
       <div className="mx-auto mb-5 grid h-20 w-20 place-items-center rounded-full border-8 border-neutral-300 bg-black text-white">
         {icon}
       </div>

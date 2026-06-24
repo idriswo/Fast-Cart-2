@@ -17,7 +17,18 @@
       "Bash(npm install *)",
       "Bash(grep -E \"^\\(react|vite|zustand|axios|tailwindcss\\)$\")",
       "Bash(npm run *)",
-      "PowerShell(Start-Process \"http://localhost:5174/\")"
+      "PowerShell(Start-Process \"http://localhost:5174/\")",
+      "Bash(git remote *)",
+      "Bash(curl -s http://localhost:5175/)",
+      "Bash(node -e ' *)",
+      "Bash(npm i *)",
+      "Bash(npx playwright *)",
+      "Bash(cp /tmp/drive.mjs ./_drive.mjs)",
+      "Bash(node ./_drive.mjs)",
+      "Bash(rm -f ./_drive.mjs)",
+      "Bash(npm uninstall *)",
+      "Bash(node --input-type=module -e ' *)",
+      "Bash(git push *)"
     ]
   }
 }

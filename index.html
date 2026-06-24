@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Cart — Маркетплейси маҳсулоти техникӣ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <p>Тахфифи тобистона барои ҳамаи маҳсулоти техникӣ — то 50%!
+      <a href="#">Харид кунед <strong>↗</strong></a>
+    </p>
+    <select class="lang" aria-label="Забон">
+      <option>Тоҷикӣ</option>
+      <option>Русский</option>
+      <option>English</option>
+    </select>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav">
+      <a href="#" class="logo">Fast<span>Cart</span></a>
+      <nav class="menu">
+        <a href="#" class="active">Асосӣ</a>
+        <a href="#catalog">Каталог</a>
+        <a href="#about">Дар бораи мо</a>
+        <a href="#contact">Тамос</a>
+      </nav>
+      <div class="actions">
+        <div class="search">
+          <input type="text" placeholder="Ҷустуҷӯи маҳсулот..." />
+          <span class="i">⌕</span>
+        </div>
+        <button class="icon-btn" aria-label="Дӯстдошта">♡</button>
+        <button class="icon-btn" aria-label="Корзинка">🛒<span class="badge">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <aside class="cats">
+      <a href="#">Смартфонҳо ›</a>
+      <a href="#">Ноутбук ва ПК ›</a>
+      <a href="#">Гаджет ва аксессуар</a>
+      <a href="#">Аудио ва наушник</a>
+      <a href="#">Камера ва аксбардорӣ</a>
+      <a href="#">Гейминг</a>
+      <a href="#">Қисмҳои компютерӣ</a>
+      <a href="#">Смарт-хона</a>
+    </aside>
+    <div class="hero-banner">
+      <div class="hero-text">
+        <div class="brand-row"><span class="apple"></span> Серияи нав</div>
+        <h1>Маҳсулоти техникӣ<br/>бо нархи беҳтарин</h1>
+        <a href="#catalog" class="shop-now">Ҳозир харид кунед →</a>
+      </div>
+      <div class="hero-img">📱💻🎧</div>
+    </div>
+  </section>
+
+  <!-- Flash sales -->
+  <section class="section container" id="catalog">
+    <div class="sec-head">
+      <span class="tag">Имрӯз</span>
+    </div>
+    <h2 class="sec-title">Фурӯши барқӣ ⚡</h2>
+    <div class="grid products" id="products"></div>
+    <div class="center"><button class="btn-dark">Дидани ҳама маҳсулот</button></div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section container">
+    <div class="sec-head"><span class="tag">Категорияҳо</span></div>
+    <h2 class="sec-title">Аз рӯи категория ҷустуҷӯ кунед</h2>
+    <div class="grid cats-grid" id="categories"></div>
+  </section>
+
+  <!-- Services -->
+  <section class="services container">
+    <div class="service">
+      <div class="circle">🚚</div>
+      <h4>Расонидани ройгон</h4>
+      <p>Барои харидҳои аз 500 сомонӣ</p>
+    </div>
+    <div class="service">
+      <div class="circle">🎧</div>
+      <h4>Дастгирии 24/7</h4>
+      <p>Хизматрасонии доимии муштарӣ</p>
+    </div>
+    <div class="service">
+      <div class="circle">✓</div>
+      <h4>Кафолати баргардонидан</h4>
+      <p>Баргардонидани пул дар 30 рӯз</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container foot-grid">
+      <div>
+        <a href="#" class="logo light">Fast<span>Cart</span></a>
+        <p>Маркетплейси №1 барои маҳсулоти техникӣ дар Тоҷикистон.</p>
+      </div>
+      <div>
+        <h5>Дастгирӣ</h5>
+        <p>Душанбе, Тоҷикистон</p>
+        <p>support@fastcart.tj</p>
+        <p>+992 00 000 0000</p>
+      </div>
+      <div>
+        <h5>Ҳисоб</h5>
+        <a href="#">Профили ман</a>
+        <a href="#">Корзинка</a>
+        <a href="#">Дӯстдошта</a>
+      </div>
+      <div>
+        <h5>Пайвандҳои зуд</h5>
+        <a href="#about">Дар бораи мо</a>
+        <a href="#">Сиёсати махфият</a>
+        <a href="#">Шартҳои истифода</a>
+      </div>
+    </div>
+    <div class="copy">© 2026 FastCart. Ҳамаи ҳуқуқҳо ҳифз шудаанд.</div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(git *)",
+      "PowerShell(git config *)",
+      "Bash(git init *)",
+      "Bash(git branch *)",
+      "Bash(mkdir -p .claude/commands assets css js)",
+      "Bash(echo 'node_modules/ *)",
+      "PowerShell(Get-Content *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

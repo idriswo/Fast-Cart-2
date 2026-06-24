@@ -43,13 +43,6 @@ export default function Header() {
 
   return (
     <>
-      <div className="bg-black px-4 py-2.5 text-center text-xs text-neutral-100 sm:text-sm">
-        Тахфифи тобистона — то 50% барои маҳсулоти техникӣ!{" "}
-        <Link to="/catalog" className="font-semibold underline">
-          Харид кунед
-        </Link>
-      </div>
-
       <header className="sticky top-0 z-50 border-b bg-white">
         <div className="container-x flex h-16 items-center justify-between gap-4 md:h-18">
           {/* Hamburger (мобилӣ) */}

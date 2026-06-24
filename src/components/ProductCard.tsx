@@ -29,11 +29,7 @@ export default function ProductCard({
   const rating = 4 + (product.id % 2);
 
   return (
-    <div
-      data-aos="fade-up"
-      data-aos-delay={(index % 4) * 100}
-      className="group flex h-full flex-col"
-    >
+    <div className="group flex h-full flex-col">
       <div className="relative flex h-64 items-center justify-center overflow-hidden rounded-md bg-soft p-4 transition-all duration-300">
         {discountPct > 0 && (
           <span className="absolute left-3 top-3 z-10 rounded bg-brand px-3 py-1 text-xs font-semibold text-white">

@@ -3,10 +3,30 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 const SLIDES = [
-  { tag: "Серияи iPhone 15", title: "То 10% тахфиф бо ваучер", emoji: "📱", link: "/catalog" },
-  { tag: "Samsung Galaxy AI", title: "Давраи нави Galaxy", emoji: "✨", link: "/catalog" },
-  { tag: "MacBook Pro M3", title: "Иҷроиши ҳайратангез", emoji: "💻", link: "/catalog" },
-  { tag: "Sony WH-1000XM5", title: "Ҷаҳони шумо. Дигар ҳеҷ", emoji: "🎧", link: "/catalog" },
+  {
+    tag: "Серияи iPhone 15",
+    title: "То 10% тахфиф бо ваучер",
+    img: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?q=80&w=800&auto=format&fit=crop",
+    link: "/catalog",
+  },
+  {
+    tag: "Samsung Galaxy AI",
+    title: "Давраи нави Galaxy",
+    img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=800&auto=format&fit=crop",
+    link: "/catalog",
+  },
+  {
+    tag: "MacBook Pro M3",
+    title: "Иҷроиши ҳайратангез",
+    img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop",
+    link: "/catalog",
+  },
+  {
+    tag: "Sony WH-1000XM5",
+    title: "Ҷаҳони шумо. Дигар ҳеҷ",
+    img: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=800&auto=format&fit=crop",
+    link: "/catalog",
+  },
 ];
 
 export default function Hero() {
@@ -49,8 +69,12 @@ export default function Hero() {
                 />
               </Link>
             </div>
-            <div className="hidden flex-1 items-center justify-center text-[120px] md:flex">
-              {slide.emoji}
+            <div className="flex flex-1 items-center justify-center">
+              <img
+                src={slide.img}
+                alt={slide.tag}
+                className="max-h-[140px] w-auto rounded-xl object-cover shadow-2xl md:max-h-[260px]"
+              />
             </div>
           </div>
         );

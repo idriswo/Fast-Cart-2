@@ -28,7 +28,8 @@
       "Bash(rm -f ./_drive.mjs)",
       "Bash(npm uninstall *)",
       "Bash(node --input-type=module -e ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(npx --yes skills add Leonxlnx/taste-skill)"
     ]
   }
 }

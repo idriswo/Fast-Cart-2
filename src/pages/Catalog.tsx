@@ -5,6 +5,7 @@ import { getCategories, getProducts } from "@/api/products";
 import type { Brand, Category, Color, Product } from "@/types";
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
+import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 
@@ -186,11 +187,11 @@ export default function Catalog() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
-                {products.map((p, i) => (
-                  <ProductCard key={p.id} product={p} index={i} />
+              <Reveal className="grid grid-cols-2 gap-6 md:grid-cols-3">
+                {products.map((p) => (
+                  <ProductCard key={p.id} product={p} />
                 ))}
-              </div>
+              </Reveal>
 
               {totalPage > 1 && (
                 <div className="mt-10 flex justify-center gap-2">

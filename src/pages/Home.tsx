@@ -10,6 +10,7 @@ import NewArrival from "@/components/NewArrival";
 import SectionHead from "@/components/SectionHead";
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
+import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { imageUrl } from "@/lib/utils";
 
@@ -48,9 +49,9 @@ export default function Home() {
               )
           )}
         </aside>
-        <div className="flex-1" data-aos="fade-left">
+        <Reveal className="flex-1">
           <Hero />
-        </div>
+        </Reveal>
       </section>
 
       {/* Flash Sales */}
@@ -61,28 +62,30 @@ export default function Home() {
       {/* Категорияҳо */}
       <section className="mt-4">
         <SectionHead tag="Категорияҳо" title="Аз рӯи категория ҷустуҷӯ кунед" />
-        <div className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6">
-          {loadingC
-            ? Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="skeleton h-32 rounded-md" />
-              ))
-            : categories.map((c, i) => (
-                <Link
-                  key={c.id}
-                  to={`/catalog?category=${c.id}`}
-                  data-aos="zoom-in"
-                  data-aos-delay={(i % 6) * 80}
-                  className="flex h-32 flex-col items-center justify-center gap-3 rounded-md border transition-all duration-300 hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-white hover:shadow-lg"
-                >
-                  <img
-                    src={imageUrl(c.categoryImage)}
-                    alt={c.categoryName}
-                    className="h-12 w-12 object-contain"
-                  />
-                  <span className="text-sm font-medium">{c.categoryName}</span>
-                </Link>
-              ))}
-        </div>
+        {loadingC ? (
+          <div className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="skeleton h-32 rounded-md" />
+            ))}
+          </div>
+        ) : (
+          <Reveal className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6">
+            {categories.map((c) => (
+              <Link
+                key={c.id}
+                to={`/catalog?category=${c.id}`}
+                className="flex h-32 flex-col items-center justify-center gap-3 rounded-md border transition-all duration-300 hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-white hover:shadow-lg"
+              >
+                <img
+                  src={imageUrl(c.categoryImage)}
+                  alt={c.categoryName}
+                  className="h-12 w-12 object-contain"
+                />
+                <span className="text-sm font-medium">{c.categoryName}</span>
+              </Link>
+            ))}
+          </Reveal>
+        )}
       </section>
 
       {/* Promo banner */}
@@ -96,27 +99,30 @@ export default function Home() {
             <Button>Дидани ҳама</Button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {loadingP
-            ? Array.from({ length: 4 }).map((_, i) => <ProductCardSkeleton key={i} />)
-            : products
-                .slice(0, 8)
-                .map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
-        </div>
+        {loadingP ? (
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <Reveal className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {products.slice(0, 8).map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </Reveal>
+        )}
       </section>
 
       {/* New Arrival */}
       <NewArrival />
 
       {/* Хизматрасониҳо */}
-      <section
-        className="my-24 flex flex-col items-center justify-center gap-16 md:flex-row"
-        data-aos="fade-up"
-      >
+      <Reveal className="my-24 flex flex-col items-center justify-center gap-16 md:flex-row">
         <Service icon={<Truck />} title="Расонидани ройгон" text="Барои харидҳои аз 500 сомонӣ" />
         <Service icon={<Headphones />} title="Дастгирии 24/7" text="Хизматрасонии доимии муштарӣ" />
         <Service icon={<ShieldCheck />} title="Кафолати баргардонидан" text="Баргардонидани пул дар 30 рӯз" />
-      </section>
+      </Reveal>
     </div>
   );
 }

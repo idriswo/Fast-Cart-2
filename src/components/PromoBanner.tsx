@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Reveal from "./Reveal";
 
 function useCountdown(target: number) {
   const [left, setLeft] = useState(target - Date.now());
@@ -21,10 +22,8 @@ export default function PromoBanner() {
   const units = useCountdown(target);
 
   return (
-    <section
-      data-aos="fade-up"
-      className="relative my-16 flex flex-col items-center justify-between gap-8 overflow-hidden rounded-md bg-black px-6 py-12 text-white md:flex-row md:px-16 md:py-16"
-    >
+    <Reveal className="my-16">
+    <section className="relative flex flex-col items-center justify-between gap-8 overflow-hidden rounded-md bg-black px-6 py-12 text-white md:flex-row md:px-16 md:py-16">
       <div className="z-10 max-w-md text-center md:text-left">
         <span className="font-semibold text-green-400">Категорияҳо</span>
         <h2 className="mt-4 text-3xl font-bold leading-tight md:text-5xl">
@@ -50,7 +49,12 @@ export default function PromoBanner() {
           Ҳозир харидан
         </Link>
       </div>
-      <div className="z-10 text-[120px] drop-shadow-2xl md:text-[160px]">🔊</div>
+      <img
+        src="https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=900&auto=format&fit=crop"
+        alt="Динамик"
+        className="z-10 max-h-[220px] w-auto object-contain drop-shadow-2xl"
+      />
     </section>
+    </Reveal>
   );
 }

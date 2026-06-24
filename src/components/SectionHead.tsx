@@ -1,3 +1,5 @@
+import Reveal from "./Reveal";
+
 export default function SectionHead({
   tag,
   title,
@@ -6,7 +8,7 @@ export default function SectionHead({
   title: string;
 }) {
   return (
-    <div className="flex flex-col gap-2" data-aos="fade-right">
+    <Reveal className="flex flex-col gap-2">
       <div className="flex items-center gap-3">
         <span className="h-10 w-5 rounded-sm bg-brand" />
         <span className="text-sm font-semibold text-brand">{tag}</span>
@@ -14,6 +16,6 @@ export default function SectionHead({
       <h2 className="text-3xl font-bold tracking-wide text-neutral-900 sm:text-4xl">
         {title}
       </h2>
-    </div>
+    </Reveal>
   );
 }

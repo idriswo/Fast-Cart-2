@@ -2,19 +2,21 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Heart, LogOut, Menu, Search, ShoppingCart, User, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { useCart } from "@/store/cart";
 import { useWishlist } from "@/store/wishlist";
 import { useAuth } from "@/store/auth";
 import { cn } from "@/lib/utils";
-
-const nav = [
-  { to: "/", label: "Асосӣ" },
-  { to: "/catalog", label: "Каталог" },
-  { to: "/about", label: "Дар бораи мо" },
-  { to: "/contact", label: "Тамос" },
-];
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Header() {
+  const { t } = useTranslation();
+  const nav = [
+    { to: "/", label: t("nav.home") },
+    { to: "/catalog", label: t("nav.catalog") },
+    { to: "/about", label: t("nav.about") },
+    { to: "/contact", label: t("nav.contact") },
+  ];
   const count = useCart((s) => s.count());
   const wish = useWishlist((s) => s.items.length);
   const { isAuthenticated, user, logout } = useAuth();
@@ -24,7 +26,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    toast.success("Шумо аз ҳисоб баромадед");
+    toast.success(t("header.logoutToast"));
     navigate("/");
   };
 
@@ -49,7 +51,7 @@ export default function Header() {
           <button
             onClick={() => setOpen(true)}
             className="p-1 transition-transform active:scale-90 md:hidden"
-            aria-label="Меню"
+            aria-label={t("header.menu")}
           >
             <Menu size={24} />
           </button>
@@ -71,13 +73,15 @@ export default function Header() {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Ҷустуҷӯи маҳсулот..."
+                placeholder={t("header.searchPlaceholder")}
                 className="h-9 w-40 rounded-md bg-soft pl-4 pr-9 text-sm outline-none lg:w-56"
               />
               <button type="submit" className="absolute right-2.5 top-2 text-neutral-500">
                 <Search size={18} />
               </button>
             </form>
+
+            <LanguageSwitcher />
 
             <Link to="/wishlist" className="group relative">
               <Heart
@@ -97,11 +101,11 @@ export default function Header() {
               <div className="flex items-center gap-3">
                 <Link to="/account" className="flex items-center gap-1.5 text-sm font-medium">
                   <User size={20} />
-                  <span className="hidden md:inline">{user?.name || "Профил"}</span>
+                  <span className="hidden md:inline">{user?.name || t("header.profile")}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  aria-label="Баромад"
+                  aria-label={t("header.logout")}
                   className="text-neutral-500 hover:text-brand"
                 >
                   <LogOut size={20} />
@@ -112,7 +116,7 @@ export default function Header() {
                 to="/login"
                 className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand-dark md:px-4"
               >
-                Ворид
+                {t("header.login")}
               </Link>
             )}
           </div>
@@ -137,7 +141,7 @@ export default function Header() {
           <span className="text-xl font-extrabold">
             Fast<span className="text-brand">Cart</span>
           </span>
-          <button onClick={() => setOpen(false)} aria-label="Пӯшидан">
+          <button onClick={() => setOpen(false)} aria-label={t("header.close")}>
             <X size={24} />
           </button>
         </div>
@@ -166,13 +170,17 @@ export default function Header() {
             </NavLink>
           ))}
 
+          <div className="border-b border-neutral-100 py-2">
+            <LanguageSwitcher />
+          </div>
+
           {!isAuthenticated ? (
             <Link
               to="/login"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-md bg-brand py-2.5 text-center text-sm font-medium text-white"
             >
-              Ворид шудан
+              {t("header.loginFull")}
             </Link>
           ) : (
             <button
@@ -182,7 +190,7 @@ export default function Header() {
               }}
               className="py-2 text-left text-[15px] font-semibold text-brand transition-all hover:pl-2"
             >
-              Баромадан
+              {t("header.logout")}
             </button>
           )}
         </div>

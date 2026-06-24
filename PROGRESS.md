@@ -81,11 +81,17 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
 
 ## 📌 Ҳолати ҳозира
 Сайти пурра: каталог, авторизатсия, корзинка, checkout, дизайни Ecommerce/Exclusive,
-responsive (desktop + мобилӣ бо hamburger). Панели Seller аз клиент хориҷ карда шуд.
-`container-x` max-width = 1400px. Build тоза. Dev: `npm run dev`.
+responsive. Расмҳои воқеӣ (на эмодзӣ). Анимацияи ягонаи классикӣ бо
+`react-awesome-reveal` (fade-up, бе AOS/motion). i18n (tj/ru/en) илова шуд.
+`container-x` = 1400px. Хатчаи тахфиф хориҷ шуд. Build тоза.
+
+## 🎨 Дизайн/UX
+- Расмҳои воқеии Unsplash дар Hero/PromoBanner/NewArrival (бе эмодзӣ — Section 4.8 taste-skill)
+- Reveal.tsx: Fade direction="up" triggerOnce, layout дар div-и дохилӣ (grid вайрон намешавад)
+- i18n: react-i18next + LanguageSwitcher (tj/ru/en)
 
 ## ➡️ Қадами навбатӣ
-- Phase 6 (боқимонда): i18n (tj/ru/en), dark mode.
+- Phase 6 (боқимонда): dark mode.
 - Phase 7: Деплой.
 
 ## 📝 Лог

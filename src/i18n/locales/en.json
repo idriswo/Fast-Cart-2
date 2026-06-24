@@ -1,0 +1,202 @@
+{
+  "nav": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "header": {
+    "searchPlaceholder": "Search products...",
+    "login": "Sign in",
+    "loginFull": "Sign in",
+    "logout": "Sign out",
+    "logoutToast": "You have signed out",
+    "profile": "Profile",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "home": {
+    "categoriesTag": "Categories",
+    "categoriesTitle": "Browse by category",
+    "monthTag": "This month",
+    "bestTitle": "Best selling products",
+    "viewAll": "View all",
+    "freeDeliveryTitle": "Free delivery",
+    "freeDeliveryText": "For orders over 500 somoni",
+    "supportTitle": "24/7 support",
+    "supportText": "Always-on customer service",
+    "guaranteeTitle": "Money-back guarantee",
+    "guaranteeText": "Refund within 30 days"
+  },
+  "footer": {
+    "tagline": "The #1 marketplace for tech products in Tajikistan.",
+    "support": "Support",
+    "address": "Dushanbe, Tajikistan",
+    "account": "Account",
+    "myProfile": "My profile",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "links": "Links",
+    "rights": "© 2026 FastCart. All rights reserved."
+  },
+  "catalog": {
+    "searchResults": "Search results: “{{q}}”",
+    "title": "Catalog",
+    "allProducts": "All products",
+    "filters": "Filters",
+    "clear": "Clear",
+    "category": "Category",
+    "all": "All",
+    "brand": "Brand",
+    "color": "Color",
+    "maxPrice": "Max price",
+    "maxPricePlaceholder": "e.g. 5000",
+    "upTo": "up to {{price}}",
+    "notFound": "No products found 😔",
+    "clearFilters": "Clear filters"
+  },
+  "cart": {
+    "empty": "Your cart is empty 🛒",
+    "goShopping": "Go shopping",
+    "title": "Cart",
+    "total": "Total:",
+    "clear": "Clear",
+    "checkout": "Checkout"
+  },
+  "wishlist": {
+    "empty": "Your wishlist is empty ♡",
+    "goCatalog": "Go to catalog",
+    "title": "Wishlist ({{count}})"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "done": "Order placed! 🎉",
+    "doneText": "Our operator will contact you shortly.",
+    "continueShopping": "Continue shopping",
+    "emptyCart": "Cart is empty.",
+    "toCatalog": "To catalog",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "city": "City",
+    "address": "Address",
+    "payment": "Payment method",
+    "cash": "Cash",
+    "card": "Bank card",
+    "note": "Note (optional)",
+    "yourOrder": "Your order",
+    "total": "Total:",
+    "submitting": "Submitting...",
+    "confirm": "Confirm order",
+    "errFirstName": "First name at least 2 characters",
+    "errLastName": "Last name at least 2 characters",
+    "errPhone": "Invalid phone number",
+    "errCity": "Enter your city",
+    "errAddress": "Enter full address"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Enter your details",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "waiting": "Please wait...",
+    "noAccount": "No account?",
+    "register": "Sign up",
+    "errUsername": "Enter username",
+    "errPassword": "Enter password",
+    "tokenNotFound": "Token not found",
+    "welcome": "Welcome! 👋",
+    "invalid": "Invalid username or password"
+  },
+  "register": {
+    "title": "Create account",
+    "subtitle": "Enter your details",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone number",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "submit": "Create account",
+    "waiting": "Please wait...",
+    "haveAccount": "Already have an account?",
+    "login": "Sign in",
+    "success": "Registration successful! Now sign in",
+    "error": "An error occurred during registration",
+    "errName": "Name at least 2 characters",
+    "errEmail": "Invalid email",
+    "errPhoneDigits": "Digits only",
+    "errPhoneMin": "At least 7 digits",
+    "errPhoneMax": "No more than 15 digits",
+    "errPassword": "Password at least 6 characters",
+    "errMatch": "Passwords do not match"
+  },
+  "product": {
+    "notFound": "Product not found.",
+    "backToCatalog": "Back to catalog",
+    "color": "Color:",
+    "inStock": "In stock:",
+    "pcs": "{{count}} pcs",
+    "outOfStock": "Out of stock",
+    "addToCart": "Add to cart"
+  },
+  "card": {
+    "wishlist": "Wishlist",
+    "view": "View",
+    "addToCart": "Add to cart"
+  },
+  "flash": {
+    "tag": "Today",
+    "title": "Flash Sales",
+    "day": "Days",
+    "hour": "Hours",
+    "minute": "Minutes",
+    "second": "Seconds"
+  },
+  "promo": {
+    "tag": "Categories",
+    "title": "Enjoy the music",
+    "buyNow": "Buy now",
+    "day": "Days",
+    "hour": "Hours",
+    "minute": "Minutes",
+    "second": "Seconds"
+  },
+  "newArrival": {
+    "tag": "Featured",
+    "title": "New arrivals",
+    "buy": "Shop now",
+    "ps5Title": "PlayStation 5",
+    "ps5Text": "Black and white version of the PS5 is out now.",
+    "womenTitle": "Women's collection",
+    "womenText": "Featured products for women.",
+    "speakersTitle": "Speakers",
+    "speakersText": "Wireless speakers.",
+    "perfumeTitle": "Perfume",
+    "perfumeText": "Premium perfume."
+  },
+  "about": {
+    "title": "About us",
+    "text": "FastCart is a modern marketplace for buying and selling tech products in Tajikistan. Our goal is to offer the best prices and fast service."
+  },
+  "contact": {
+    "title": "Contact"
+  },
+  "account": {
+    "title": "My profile",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "defaultRole": "User",
+    "cart": "Cart",
+    "logout": "Sign out"
+  },
+  "notFound": {
+    "text": "Page not found.",
+    "toHome": "Back to home"
+  },
+  "common": {
+    "addedToCart": "Added to cart",
+    "requireAuth": "Please sign in first"
+  }
+}

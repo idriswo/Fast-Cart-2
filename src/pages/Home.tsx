@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Headphones, ShieldCheck, Truck } from "lucide-react";
 import { getCategories, getProducts } from "@/api/products";
 import type { Category, Product } from "@/types";
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { imageUrl } from "@/lib/utils";
 
 export default function Home() {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingP, setLoadingP] = useState(true);
@@ -61,7 +63,7 @@ export default function Home() {
 
       {/* Категорияҳо */}
       <section className="mt-4">
-        <SectionHead tag="Категорияҳо" title="Аз рӯи категория ҷустуҷӯ кунед" />
+        <SectionHead tag={t("home.categoriesTag")} title={t("home.categoriesTitle")} />
         {loadingC ? (
           <div className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -94,9 +96,9 @@ export default function Home() {
       {/* Маҳсулоти беҳтарин */}
       <section className="mt-16">
         <div className="mb-8 flex items-end justify-between">
-          <SectionHead tag="Ин моҳ" title="Маҳсулоти беҳтарин" />
+          <SectionHead tag={t("home.monthTag")} title={t("home.bestTitle")} />
           <Link to="/catalog">
-            <Button>Дидани ҳама</Button>
+            <Button>{t("home.viewAll")}</Button>
           </Link>
         </div>
         {loadingP ? (
@@ -119,9 +121,9 @@ export default function Home() {
 
       {/* Хизматрасониҳо */}
       <Reveal className="my-24 flex flex-col items-center justify-center gap-16 md:flex-row">
-        <Service icon={<Truck />} title="Расонидани ройгон" text="Барои харидҳои аз 500 сомонӣ" />
-        <Service icon={<Headphones />} title="Дастгирии 24/7" text="Хизматрасонии доимии муштарӣ" />
-        <Service icon={<ShieldCheck />} title="Кафолати баргардонидан" text="Баргардонидани пул дар 30 рӯз" />
+        <Service icon={<Truck />} title={t("home.freeDeliveryTitle")} text={t("home.freeDeliveryText")} />
+        <Service icon={<Headphones />} title={t("home.supportTitle")} text={t("home.supportText")} />
+        <Service icon={<ShieldCheck />} title={t("home.guaranteeTitle")} text={t("home.guaranteeText")} />
       </Reveal>
     </div>
   );

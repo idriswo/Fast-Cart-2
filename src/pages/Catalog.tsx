@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { SlidersHorizontal } from "lucide-react";
 import { getCategories, getProducts } from "@/api/products";
 import type { Brand, Category, Color, Product } from "@/types";
@@ -12,6 +13,7 @@ import { formatPrice } from "@/lib/utils";
 const PAGE_SIZE = 9;
 
 export default function Catalog() {
+  const { t } = useTranslation();
   const [params, setParams] = useSearchParams();
   const q = params.get("q") ?? "";
   const categoryId = params.get("category");
@@ -61,11 +63,11 @@ export default function Catalog() {
   useEffect(() => setPage(1), [q, activeCat, activeColor, activeBrand, maxPrice]);
 
   const title = useMemo(() => {
-    if (q) return `Натиҷаҳои ҷустуҷӯ: «${q}»`;
+    if (q) return t("catalog.searchResults", { q });
     if (activeCat)
-      return categories.find((c) => c.id === activeCat)?.categoryName ?? "Каталог";
-    return "Ҳамаи маҳсулот";
-  }, [q, activeCat, categories]);
+      return categories.find((c) => c.id === activeCat)?.categoryName ?? t("catalog.title");
+    return t("catalog.allProducts");
+  }, [q, activeCat, categories, t]);
 
   const resetFilters = () => {
     setActiveCat(null);
@@ -84,22 +86,22 @@ export default function Catalog() {
         <aside className="w-full shrink-0 lg:w-64">
           <div className="mb-6 flex items-center justify-between">
             <span className="flex items-center gap-2 font-semibold">
-              <SlidersHorizontal size={18} /> Филтрҳо
+              <SlidersHorizontal size={18} /> {t("catalog.filters")}
             </span>
             <button
               onClick={resetFilters}
               className="text-sm text-brand hover:underline"
             >
-              Тоза кардан
+              {t("catalog.clear")}
             </button>
           </div>
 
-          <FilterGroup title="Категория">
+          <FilterGroup title={t("catalog.category")}>
             <button
               onClick={() => setActiveCat(null)}
               className={pill(activeCat === null)}
             >
-              Ҳама
+              {t("catalog.all")}
             </button>
             {categories.map((c) => (
               <button
@@ -113,12 +115,12 @@ export default function Catalog() {
           </FilterGroup>
 
           {brands.length > 0 && (
-            <FilterGroup title="Бренд">
+            <FilterGroup title={t("catalog.brand")}>
               <button
                 onClick={() => setActiveBrand(null)}
                 className={pill(activeBrand === null)}
               >
-                Ҳама
+                {t("catalog.all")}
               </button>
               {brands.map((b) => (
                 <button
@@ -133,12 +135,12 @@ export default function Catalog() {
           )}
 
           {colors.length > 0 && (
-            <FilterGroup title="Ранг">
+            <FilterGroup title={t("catalog.color")}>
               <button
                 onClick={() => setActiveColor(null)}
                 className={pill(activeColor === null)}
               >
-                Ҳама
+                {t("catalog.all")}
               </button>
               {colors.map((c) => (
                 <button
@@ -152,19 +154,19 @@ export default function Catalog() {
             </FilterGroup>
           )}
 
-          <FilterGroup title="Нархи максималӣ">
+          <FilterGroup title={t("catalog.maxPrice")}>
             <input
               type="number"
               value={maxPrice}
               onChange={(e) =>
                 setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
               }
-              placeholder="масалан 5000"
+              placeholder={t("catalog.maxPricePlaceholder")}
               className="h-9 w-full rounded-md border px-3 text-sm outline-none"
             />
             {maxPrice !== "" && (
               <p className="mt-2 text-xs text-neutral-500">
-                то {formatPrice(Number(maxPrice))}
+                {t("catalog.upTo", { price: formatPrice(Number(maxPrice)) })}
               </p>
             )}
           </FilterGroup>
@@ -180,9 +182,9 @@ export default function Catalog() {
             </div>
           ) : products.length === 0 ? (
             <div className="flex h-64 flex-col items-center justify-center text-neutral-400">
-              <p>Маҳсулот ёфт нашуд 😔</p>
+              <p>{t("catalog.notFound")}</p>
               <Button variant="outline" className="mt-4" onClick={resetFilters}>
-                Тоза кардани филтрҳо
+                {t("catalog.clearFilters")}
               </Button>
             </div>
           ) : (

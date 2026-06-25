@@ -34,7 +34,10 @@
       "Bash(curl -s http://localhost:5173)",
       "Bash(curl -s http://localhost:5174)",
       "PowerShell(Get-Process *)",
-      "Bash(curl -s -o /dev/null -w \"Status: %{http_code}\\\\n\" http://localhost:5173/)"
+      "Bash(curl -s -o /dev/null -w \"Status: %{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(vercel whoami *)",
+      "Bash(vercel link *)",
+      "PowerShell(vercel link *)"
     ]
   }
 }

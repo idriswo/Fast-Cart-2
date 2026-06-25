@@ -97,7 +97,19 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
 - [x] **UserMenu** (`components/UserMenu.tsx`): икони корбар → dropdown (Профил / Баромадан)
 - Эзоҳ: Contact/About/Account аз `Simple.tsx` ба файлҳои алоҳида кӯчиданд (Simple = танҳо NotFound)
 
-### Phase 7 — Деплой
+### Phase 7 — Деплой 🚧 (дар ҷараён)
+- [x] `vercel.json` илова шуд — SPA rewrites (ҳамаи routeҳо → index.html), commit/push шуд
+- [x] Vercel CLI насб шуд; корбар `vercel login` кард (GitHub: idriswo)
+- [ ] **Деплой нотамом** — CLI дар ин муҳит интерактивӣ овезон мешавад (whoami/link/deploy
+      ҳеҷ output намедиҳанд). Роҳи тавсияшаванда: **Vercel Dashboard import**.
+- **Барои тамом кардан (қадами навбатӣ):**
+  1. https://vercel.com/new → Import репозиторияи `idriswo/Fast-Cart-2`
+  2. Framework: Vite (худкор), Build: `npm run build`, Output: `dist`
+  3. Environment Variables гузоштан:
+     - `VITE_BASE_URL` = `https://store-api.softclub.tj`
+     - `VITE_IMAGE_URL` = `https://store-api.softclub.tj/images`
+  4. Deploy → URL-ро санҷидан (саҳифаҳо, расмҳо, i18n, dark mode)
+  - Алтернатива: дар терминали корбар `! vercel --prod` + `vercel env add ...`
 
 ---
 
@@ -114,7 +126,8 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - i18n: react-i18next + LanguageSwitcher; ThemeToggle; UserMenu (ҳама дар Header)
 
 ## ➡️ Қадами навбатӣ
-- Phase 7: **Деплой** (Vercel/Netlify) — env `VITE_BASE_URL`, `VITE_IMAGE_URL` гузоштан.
+- **Phase 7 — деплойро тамом кардан:** Vercel Dashboard import (idriswo/Fast-Cart-2),
+  env `VITE_BASE_URL` ва `VITE_IMAGE_URL` гузоштан, Deploy. (vercel.json тайёр)
 - Ихтиёрӣ: stagger-и сабук барои кортҳои маҳсулот; bundle code-split (chunk > 500kB).
 - Ихтиёрӣ: васл кардани API-и воқеии фармоиш (CheckOut ҳозир mock аст).
 
@@ -122,3 +135,4 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - **2026-06-24:** Phase 1 + 2. Стек гузошта шуд, API-и softclub васл шуд, каталог/детал/корзинка/wishlist сохта шуд. Build тоза.
 - **2026-06-24:** Анимация AOS → react-awesome-reveal (Reveal.tsx). Сипас **i18n (tj/ru/en)** пурра илова шуд: i18next + LanguageSwitcher, ҳамаи саҳифаҳо тарҷумашуда, Zod бо makeSchema(t). Build тоза.
 - **2026-06-25:** **Dark/Light mode** (ThemeToggle, var-based). Анимация **баргардонида шуд ба AOS** (классикӣ fade-up). Саҳифаҳои нави Exclusive-style: **Contact, About, Account, Cart, CheckOut**. **UserMenu** dropdown. FlashSales ҳамсатҳ, менюи категорияҳои Home калонтар. Build тоза.
+- **2026-06-25:** Тайёрии деплой — `vercel.json` (SPA rewrites) илова/push шуд, Vercel CLI насб, login (idriswo). Деплой тавассути CLI овезон шуд → бо Dashboard import тамом мешавад (env-ҳо дар PROGRESS).

@@ -28,7 +28,7 @@ function Tile({
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
       <div className="z-10">
         <h3 className="text-xl font-semibold">{title}</h3>
-        <p className="mt-1 max-w-[220px] text-sm text-neutral-200">{text}</p>
+        <p className="mt-1 max-w-[220px] text-sm text-zinc-200">{text}</p>
         <span className="mt-3 inline-block border-b border-white pb-0.5 text-sm font-medium transition-colors group-hover:border-brand group-hover:text-brand">
           {t("newArrival.buy")}
         </span>

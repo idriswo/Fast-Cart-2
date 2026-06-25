@@ -9,7 +9,10 @@ import Wishlist from "@/pages/Wishlist";
 import CheckOut from "@/pages/CheckOut";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-import { About, Account, Contact, NotFound } from "@/pages/Simple";
+import Contact from "@/pages/Contact";
+import About from "@/pages/About";
+import Account from "@/pages/Account";
+import { NotFound } from "@/pages/Simple";
 
 export default function App() {
   return (

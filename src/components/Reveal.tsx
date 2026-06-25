@@ -1,10 +1,11 @@
-import { Fade } from "react-awesome-reveal";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
+import AOS from "aos";
 
 /**
- * Анимацияи ягонаи классикӣ бо `react-awesome-reveal`.
- * Fade танҳо анимация мекунад (fade-up), layout дар div-и дохилӣ —
- * то grid/flex вайрон нашавад. Ҳама ҷо ҳамин услуби ягона.
+ * Анимацияи ягонаи классикӣ бо AOS — танҳо "fade-up".
+ * Ҳама ҷо ҳамин услуби ягона: нарм, аз поён ба боло, як маротиба.
+ * `delay` барои stagger-и сабук, `className` барои layout (grid/flex).
  */
 export default function Reveal({
   children,
@@ -15,16 +16,14 @@ export default function Reveal({
   delay?: number;
   className?: string;
 }) {
+  // Контенти динамикӣ (баъди боргирии API) бояд аз нав сабт шавад
+  useEffect(() => {
+    AOS.refresh();
+  }, []);
+
   return (
-    <Fade
-      direction="up"
-      triggerOnce
-      duration={700}
-      delay={delay}
-      fraction={0.15}
-      style={{ width: "100%" }}
-    >
-      <div className={className}>{children}</div>
-    </Fade>
+    <div data-aos="fade-up" data-aos-delay={delay || undefined} className={className}>
+      {children}
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Headphones, ShieldCheck, Truck } from "lucide-react";
+import { ChevronRight, Headphones, ShieldCheck, Truck } from "lucide-react";
 import { getCategories, getProducts } from "@/api/products";
 import type { Category, Product } from "@/types";
 import Hero from "@/components/Hero";
@@ -35,18 +35,22 @@ export default function Home() {
     <div className="container-x">
       {/* Hero */}
       <section className="mt-8 flex flex-col gap-8 md:flex-row">
-        <aside className="hidden w-60 shrink-0 flex-col gap-3 border-r pr-4 md:flex">
+        <aside className="hidden w-64 shrink-0 flex-col gap-1 border-r pr-4 md:flex">
           {(loadingC ? Array.from({ length: 6 }) : categories.slice(0, 8)).map(
             (c: any, i) =>
               loadingC ? (
-                <div key={i} className="skeleton h-5 w-32" />
+                <div key={i} className="skeleton h-10 w-full" />
               ) : (
                 <Link
                   key={c.id}
                   to={`/catalog?category=${c.id}`}
-                  className="text-[15px] transition-all hover:pl-1 hover:text-brand"
+                  className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-[19px] font-medium text-neutral-700 transition-all duration-200 hover:bg-soft hover:text-brand"
                 >
-                  {c.categoryName}
+                  <span>{c.categoryName}</span>
+                  <ChevronRight
+                    size={20}
+                    className="-translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
+                  />
                 </Link>
               )
           )}
@@ -140,7 +144,7 @@ function Service({
 }) {
   return (
     <div className="text-center transition-transform duration-300 hover:-translate-y-1">
-      <div className="mx-auto mb-5 grid h-20 w-20 place-items-center rounded-full border-8 border-neutral-300 bg-black text-white">
+      <div className="mx-auto mb-5 grid h-20 w-20 place-items-center rounded-full border-8 border-zinc-600 bg-black text-white">
         {icon}
       </div>
       <h4 className="font-bold uppercase">{title}</h4>

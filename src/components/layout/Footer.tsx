@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 export default function Footer() {
   const { t } = useTranslation();
   return (
-    <footer className="mt-20 bg-black text-neutral-300">
+    <footer className="mt-20 bg-black text-zinc-400">
       <div className="container-x grid grid-cols-2 gap-8 py-14 md:grid-cols-4">
         <div>
           <Link to="/" className="text-2xl font-extrabold text-white">
@@ -31,7 +31,7 @@ export default function Footer() {
           <FootLink to="/contact">{t("nav.contact")}</FootLink>
         </div>
       </div>
-      <div className="border-t border-neutral-800 py-5 text-center text-sm text-neutral-500">
+      <div className="border-t border-zinc-800 py-5 text-center text-sm text-zinc-500">
         {t("footer.rights")}
       </div>
     </footer>

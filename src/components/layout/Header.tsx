@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Heart, LogOut, Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { Heart, Menu, Search, ShoppingCart, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,8 @@ import { useWishlist } from "@/store/wishlist";
 import { useAuth } from "@/store/auth";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ThemeToggle from "@/components/ThemeToggle";
+import UserMenu from "@/components/UserMenu";
 
 export default function Header() {
   const { t } = useTranslation();
@@ -19,7 +21,7 @@ export default function Header() {
   ];
   const count = useCart((s) => s.count());
   const wish = useWishlist((s) => s.items.length);
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b bg-white">
+      <header className="sticky top-0 z-50 border-b bg-neutral-50">
         <div className="container-x flex h-16 items-center justify-between gap-4 md:h-18">
           {/* Hamburger (мобилӣ) */}
           <button
@@ -81,6 +83,8 @@ export default function Header() {
               </button>
             </form>
 
+            <ThemeToggle />
+
             <LanguageSwitcher />
 
             <Link to="/wishlist" className="group relative">
@@ -98,19 +102,7 @@ export default function Header() {
               {count > 0 && <Badge>{count}</Badge>}
             </Link>
             {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <Link to="/account" className="flex items-center gap-1.5 text-sm font-medium">
-                  <User size={20} />
-                  <span className="hidden md:inline">{user?.name || t("header.profile")}</span>
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  aria-label={t("header.logout")}
-                  className="text-neutral-500 hover:text-brand"
-                >
-                  <LogOut size={20} />
-                </button>
-              </div>
+              <UserMenu />
             ) : (
               <Link
                 to="/login"
@@ -133,7 +125,7 @@ export default function Header() {
       />
       <aside
         className={cn(
-          "fixed left-0 top-0 z-[70] flex h-full w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out md:hidden",
+          "fixed left-0 top-0 z-[70] flex h-full w-[280px] flex-col bg-neutral-50 shadow-2xl transition-transform duration-300 ease-out md:hidden",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -170,8 +162,9 @@ export default function Header() {
             </NavLink>
           ))}
 
-          <div className="border-b border-neutral-100 py-2">
+          <div className="flex items-center justify-between border-b border-neutral-100 py-2">
             <LanguageSwitcher />
+            <ThemeToggle />
           </div>
 
           {!isAuthenticated ? (

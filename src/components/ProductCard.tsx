@@ -44,7 +44,7 @@ export default function ProductCard({
             onClick={() => requireAuth(() => toggle(product))}
             aria-label={t("card.wishlist")}
             className={cn(
-              "grid h-8 w-8 place-items-center rounded-full bg-white shadow-sm transition-colors duration-200",
+              "grid h-8 w-8 place-items-center rounded-full bg-neutral-50 shadow-sm transition-colors duration-200",
               liked ? "text-brand" : "text-neutral-700 hover:bg-brand hover:text-white"
             )}
           >
@@ -53,7 +53,7 @@ export default function ProductCard({
           <Link
             to={`/product/${product.id}`}
             aria-label={t("card.view")}
-            className="grid h-8 w-8 place-items-center rounded-full bg-white text-neutral-700 shadow-sm transition-colors duration-200 hover:bg-black hover:text-white"
+            className="grid h-8 w-8 place-items-center rounded-full bg-neutral-50 text-neutral-700 shadow-sm transition-colors duration-200 hover:bg-black hover:text-white"
           >
             <Eye size={16} />
           </Link>

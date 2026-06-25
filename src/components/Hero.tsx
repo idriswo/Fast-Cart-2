@@ -56,7 +56,7 @@ export default function Hero() {
             }`}
           >
             <div className="z-10 flex flex-1 flex-col items-start text-left">
-              <p className="mb-4 text-sm tracking-wide text-neutral-300">{t(slide.tagKey)}</p>
+              <p className="mb-4 text-sm tracking-wide text-zinc-300">{t(slide.tagKey)}</p>
               <h2 className="mb-6 max-w-[360px] text-3xl font-bold leading-snug tracking-tight md:text-5xl">
                 {t(slide.titleKey)}
               </h2>
@@ -91,7 +91,7 @@ export default function Hero() {
             className={`rounded-full transition-all duration-300 ${
               i === current
                 ? "h-3 w-3 scale-110 border-2 border-white bg-brand"
-                : "h-2 w-2 bg-neutral-50 hover:bg-neutral-300"
+                : "h-2 w-2 bg-zinc-50 hover:bg-zinc-300"
             }`}
           />
         ))}

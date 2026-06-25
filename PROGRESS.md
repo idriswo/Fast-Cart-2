@@ -79,27 +79,46 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
         Cart, Wishlist, CheckOut, Login, Register, ProductDetail, ProductCard,
         Hero, FlashSales, PromoBanner, NewArrival, About/Contact/Account/404)
       - Zod-и валидатсия бо `makeSchema(t)` сезабона шуд
-- [ ] боқимонда: dark mode
+- [x] **Dark / Light mode** — toggle (офтоб/моҳ) дар Header, сабт дар localStorage
+      - Усул: баръакскунии палитраи `neutral`/`soft` дар `.dark` (CSS var-ҳои Tailwind v4)
+      - Компонентҳои ҳамеша-торик (Footer/Hero/NewArrival) → `zinc` (аз баръакскунӣ эмин)
+      - Скрипт дар `index.html` барои пешгирии FOUC
+- [x] **Анимация баргардонида шуд ба AOS** (react-awesome-reveal хориҷ шуд)
+      - Танҳо як услуби классикӣ: `fade-up`, once, ease-out-cubic; `Reveal` бо AOS
+- [x] FlashSales: сарлавҳа ва countdown ҳамсатҳ (items-end)
+- [x] Менюи категорияҳои Home: калонтар (19px) + hover + chevron
+
+### Phase 6.5 — Саҳифаҳои Exclusive-style ✅
+- [x] **Contact** (`pages/Contact.tsx`): ду корт — Call/Write To Us + формаи тамос (RHF+Zod)
+- [x] **About** (`pages/About.tsx`): Қисса + расм, омори 4-корт, хизматрасониҳо
+- [x] **Account/Profile** (`pages/Account.tsx`): менюи паҳлуӣ + формаи профил + тағйири парол
+- [x] **Cart** (`pages/Cart.tsx`): ҷадвали Product/Price/Qty/Subtotal, степпер, купон, "Cart Total"
+- [x] **CheckOut** (`pages/CheckOut.tsx`): Billing Details + хулоса + Bank/Cash радио + купон + Place Order
+- [x] **UserMenu** (`components/UserMenu.tsx`): икони корбар → dropdown (Профил / Баромадан)
+- Эзоҳ: Contact/About/Account аз `Simple.tsx` ба файлҳои алоҳида кӯчиданд (Simple = танҳо NotFound)
 
 ### Phase 7 — Деплой
 
 ---
 
 ## 📌 Ҳолати ҳозира
-Сайти пурра: каталог, авторизатсия, корзинка, checkout, дизайни Ecommerce/Exclusive,
-responsive. Расмҳои воқеӣ (на эмодзӣ). Анимацияи ягонаи классикӣ бо
-`react-awesome-reveal` (fade-up, бе AOS/motion). i18n (tj/ru/en) илова шуд.
-`container-x` = 1400px. Хатчаи тахфиф хориҷ шуд. Build тоза.
+Сайти пурра бо дизайни **Exclusive/Ecommerce** дар ҳамаи саҳифаҳо: Home, Catalog,
+ProductDetail, Cart, CheckOut, Contact, About, Account, Login, Register, Wishlist.
+**i18n (tj/ru/en)** + **Dark/Light mode** + анимацияи классикии **AOS (fade-up)**.
+UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 
 ## 🎨 Дизайн/UX
-- Расмҳои воқеии Unsplash дар Hero/PromoBanner/NewArrival (бе эмодзӣ — Section 4.8 taste-skill)
-- Reveal.tsx: Fade direction="up" triggerOnce, layout дар div-и дохилӣ (grid вайрон намешавад)
-- i18n: react-i18next + LanguageSwitcher (tj/ru/en)
+- Расмҳои воқеии Unsplash дар Hero/PromoBanner/NewArrival/About
+- `Reveal.tsx` акнун бо **AOS** (data-aos="fade-up", AOS.refresh барои контенти динамикӣ)
+- Dark mode: `.dark` var-ҳои neutral/soft баръакс; white/black даст нахӯрда (матни сафеди тугмаҳо солим)
+- i18n: react-i18next + LanguageSwitcher; ThemeToggle; UserMenu (ҳама дар Header)
 
 ## ➡️ Қадами навбатӣ
-- Phase 6 (боқимонда): dark mode.
-- Phase 7: Деплой.
+- Phase 7: **Деплой** (Vercel/Netlify) — env `VITE_BASE_URL`, `VITE_IMAGE_URL` гузоштан.
+- Ихтиёрӣ: stagger-и сабук барои кортҳои маҳсулот; bundle code-split (chunk > 500kB).
+- Ихтиёрӣ: васл кардани API-и воқеии фармоиш (CheckOut ҳозир mock аст).
 
 ## 📝 Лог
 - **2026-06-24:** Phase 1 + 2. Стек гузошта шуд, API-и softclub васл шуд, каталог/детал/корзинка/wishlist сохта шуд. Build тоза.
 - **2026-06-24:** Анимация AOS → react-awesome-reveal (Reveal.tsx). Сипас **i18n (tj/ru/en)** пурра илова шуд: i18next + LanguageSwitcher, ҳамаи саҳифаҳо тарҷумашуда, Zod бо makeSchema(t). Build тоза.
+- **2026-06-25:** **Dark/Light mode** (ThemeToggle, var-based). Анимация **баргардонида шуд ба AOS** (классикӣ fade-up). Саҳифаҳои нави Exclusive-style: **Contact, About, Account, Cart, CheckOut**. **UserMenu** dropdown. FlashSales ҳамсатҳ, менюи категорияҳои Home калонтар. Build тоза.

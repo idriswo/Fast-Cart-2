@@ -43,7 +43,7 @@ export default function FlashSales({
       <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div className="flex flex-wrap items-end gap-10">
           <SectionHead tag={t("flash.tag")} title={t("flash.title")} />
-          <div className="mb-1 hidden items-center gap-5 md:flex">
+          <div className="hidden items-end gap-5 md:flex">
             {[
               { l: t("flash.day"), v: days },
               { l: t("flash.hour"), v: hours },

@@ -1,72 +1,174 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+import toast from "react-hot-toast";
 import { useCart } from "@/store/cart";
-import { Button } from "@/components/ui/button";
 import { formatPrice, imageUrl } from "@/lib/utils";
 
 export default function Cart() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { items, setQty, remove, total, clear } = useCart();
+  const [coupon, setCoupon] = useState("");
 
   if (items.length === 0)
     return (
       <div className="container-x py-20 text-center">
         <p className="text-lg text-neutral-500">{t("cart.empty")}</p>
         <Link to="/catalog">
-          <Button className="mt-6">{t("cart.goShopping")}</Button>
+          <button className="mt-6 rounded-md bg-brand px-8 py-3 font-medium text-white transition hover:bg-brand-dark">
+            {t("cart.goShopping")}
+          </button>
         </Link>
       </div>
     );
 
   return (
     <div className="container-x py-10">
-      <h1 className="mb-8 text-2xl font-bold md:text-3xl">{t("cart.title")}</h1>
+      {/* Breadcrumb */}
+      <nav className="mb-10 flex items-center gap-2 text-sm text-neutral-500">
+        <Link to="/" className="transition-colors hover:text-brand">
+          {t("nav.home")}
+        </Link>
+        <span>/</span>
+        <span className="text-neutral-900">{t("cart.title")}</span>
+      </nav>
 
-      <div className="space-y-4">
+      {/* Сарлавҳаи ҷадвал */}
+      <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_auto] items-center gap-4 px-8 py-2 text-neutral-500 md:grid">
+        <span>{t("cart.product")}</span>
+        <span className="text-center">{t("cart.price")}</span>
+        <span className="text-center">{t("cart.quantity")}</span>
+        <span className="text-right">{t("cart.subtotal")}</span>
+        <span className="w-6" />
+      </div>
+
+      {/* Сатрҳои маҳсулот */}
+      <div className="space-y-5">
         {items.map((i) => {
           const price = i.hasDiscount ? i.discountPrice : i.price;
           return (
-            <div key={i.id} className="flex items-center gap-4 rounded-md border p-4">
-              <img
-                src={imageUrl(i.image)}
-                alt={i.productName}
-                className="h-16 w-16 object-contain"
-              />
-              <div className="flex-1">
-                <h3 className="font-medium">{i.productName}</h3>
-                <p className="text-sm text-brand">{formatPrice(price)}</p>
+            <div
+              key={i.id}
+              className="grid grid-cols-2 items-center gap-4 rounded-lg border bg-neutral-50 px-6 py-5 shadow-sm md:grid-cols-[2fr_1fr_1fr_1fr_auto] md:px-8"
+            >
+              {/* Маҳсулот */}
+              <div className="col-span-2 flex items-center gap-4 md:col-span-1">
+                <img
+                  src={imageUrl(i.image)}
+                  alt={i.productName}
+                  className="h-14 w-14 shrink-0 object-contain"
+                />
+                <span className="line-clamp-2 font-medium">{i.productName}</span>
               </div>
-              <div className="flex items-center rounded-md border">
-                <button onClick={() => setQty(i.id, i.qty - 1)} className="px-2.5 py-2">
-                  <Minus size={14} />
-                </button>
-                <span className="w-10 text-center text-sm">{i.qty}</span>
-                <button onClick={() => setQty(i.id, i.qty + 1)} className="px-2.5 py-2">
-                  <Plus size={14} />
-                </button>
+
+              {/* Нарх */}
+              <span className="text-center text-sm md:text-base">{formatPrice(price)}</span>
+
+              {/* Шумора */}
+              <div className="flex justify-center">
+                <div className="flex items-center gap-3 rounded-md border border-neutral-300 px-3 py-1.5">
+                  <span className="w-6 text-center tabular-nums">
+                    {String(i.qty).padStart(2, "0")}
+                  </span>
+                  <div className="flex flex-col">
+                    <button
+                      onClick={() => setQty(i.id, i.qty + 1)}
+                      className="text-neutral-500 transition-colors hover:text-brand"
+                      aria-label="+"
+                    >
+                      <ChevronUp size={14} />
+                    </button>
+                    <button
+                      onClick={() => setQty(i.id, i.qty - 1)}
+                      className="text-neutral-500 transition-colors hover:text-brand"
+                      aria-label="-"
+                    >
+                      <ChevronDown size={14} />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <span className="w-28 text-right font-semibold">
-                {formatPrice(price * i.qty)}
-              </span>
-              <button onClick={() => remove(i.id)} className="text-neutral-400 hover:text-brand">
-                <Trash2 size={18} />
+
+              {/* Ҷамъи қисмӣ */}
+              <span className="text-right font-semibold">{formatPrice(price * i.qty)}</span>
+
+              {/* Тоза кардан */}
+              <button
+                onClick={() => remove(i.id)}
+                className="ml-auto grid h-6 w-6 place-items-center rounded-full bg-brand text-white transition-transform hover:scale-110"
+                aria-label="remove"
+              >
+                <X size={14} />
               </button>
             </div>
           );
         })}
       </div>
 
-      <div className="mt-8 flex flex-col items-end gap-4">
-        <div className="flex w-full max-w-xs justify-between border-t pt-4 text-lg font-bold">
-          <span>{t("cart.total")}</span>
-          <span className="text-brand">{formatPrice(total())}</span>
+      {/* Тугмаҳо */}
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+        <Link to="/catalog">
+          <button className="rounded-md border border-neutral-300 px-7 py-3 text-sm font-medium transition-colors hover:border-neutral-900">
+            {t("cart.returnToShop")}
+          </button>
+        </Link>
+        <div className="flex flex-wrap gap-4">
+          <button
+            onClick={() => toast.success(t("cart.updated"))}
+            className="rounded-md border border-neutral-300 px-7 py-3 text-sm font-medium transition-colors hover:border-neutral-900"
+          >
+            {t("cart.updateCart")}
+          </button>
+          <button
+            onClick={clear}
+            className="rounded-md border border-brand px-7 py-3 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+          >
+            {t("cart.removeAll")}
+          </button>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline" onClick={clear}>{t("cart.clear")}</Button>
-          <Link to="/checkout">
-            <Button>{t("cart.checkout")}</Button>
-          </Link>
+      </div>
+
+      {/* Купон + Ҷамъи корзинка */}
+      <div className="mt-12 flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+        {/* Купон */}
+        <div className="flex max-w-md flex-1 gap-4">
+          <input
+            value={coupon}
+            onChange={(e) => setCoupon(e.target.value)}
+            placeholder={t("cart.couponPlaceholder")}
+            className="h-12 flex-1 rounded-md border border-neutral-300 bg-neutral-50 px-5 text-sm outline-none focus:border-neutral-900"
+          />
+          <button
+            onClick={() => toast.error(t("cart.couponInvalid"))}
+            className="rounded-md border border-brand px-7 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+          >
+            {t("cart.apply")}
+          </button>
+        </div>
+
+        {/* Ҷамъи корзинка */}
+        <div className="w-full rounded-lg border-2 border-neutral-900 p-6 lg:w-[420px]">
+          <h3 className="text-xl font-bold">{t("cart.cartTotal")}</h3>
+          <div className="mt-6 flex justify-between border-b pb-4 text-sm">
+            <span>{t("cart.subtotal")}:</span>
+            <span>{formatPrice(total())}</span>
+          </div>
+          <div className="flex justify-between border-b py-4 text-sm">
+            <span>{t("cart.shipping")}</span>
+            <span>{t("cart.free")}</span>
+          </div>
+          <div className="flex justify-between py-4 text-lg font-bold">
+            <span>{t("cart.total")}</span>
+            <span>{formatPrice(total())}</span>
+          </div>
+          <button
+            onClick={() => navigate("/checkout")}
+            className="mt-2 w-full rounded-md bg-brand py-3.5 font-medium text-white transition-all hover:bg-brand-dark active:scale-[0.99]"
+          >
+            {t("cart.proceedCheckout")}
+          </button>
         </div>
       </div>
     </div>

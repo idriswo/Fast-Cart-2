@@ -29,7 +29,12 @@
       "Bash(npm uninstall *)",
       "Bash(node --input-type=module -e ' *)",
       "Bash(git push *)",
-      "Bash(npx --yes skills add Leonxlnx/taste-skill)"
+      "Bash(npx --yes skills add Leonxlnx/taste-skill)",
+      "Bash(npx tsc *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s http://localhost:5174)",
+      "PowerShell(Get-Process *)",
+      "Bash(curl -s -o /dev/null -w \"Status: %{http_code}\\\\n\" http://localhost:5173/)"
     ]
   }
 }

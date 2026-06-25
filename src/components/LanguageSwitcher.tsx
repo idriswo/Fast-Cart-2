@@ -9,7 +9,8 @@ export default function LanguageSwitcher() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const current = LANGS.find((l) => l.code === i18n.language) ?? LANGS[0];
+  const activeCode = i18n.resolvedLanguage ?? i18n.language;
+  const current = LANGS.find((l) => l.code === activeCode) ?? LANGS[0];
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -31,7 +32,7 @@ export default function LanguageSwitcher() {
         <ChevronDown size={14} className={cn("transition-transform", open && "rotate-180")} />
       </button>
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-36 overflow-hidden rounded-md border bg-white shadow-lg">
+        <div className="absolute right-0 top-full z-50 mt-2 w-36 overflow-hidden rounded-md border bg-neutral-50 shadow-lg">
           {LANGS.map((l) => (
             <button
               key={l.code}

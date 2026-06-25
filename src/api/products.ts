@@ -23,7 +23,18 @@ export async function getProductById(id: number): Promise<Product> {
   const { data } = await api.get("/Product/get-product-by-id", {
     params: { id },
   });
-  return data?.data;
+  const d = data?.data ?? {};
+  // get-product-by-id майдони `image` надорад — расмро аз массиви `images` мегирем
+  const images: string[] = Array.isArray(d.images)
+    ? d.images.map((im: any) => im?.images).filter(Boolean)
+    : [];
+  return {
+    ...d,
+    image: d.image ?? images[0] ?? "",
+    images,
+    color: d.color ?? d.colorName ?? "",
+    categoryName: d.categoryName ?? d.brand ?? "",
+  } as Product;
 }
 
 /** Ҳамаи категорияҳо */

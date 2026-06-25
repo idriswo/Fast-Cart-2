@@ -59,7 +59,7 @@ export default function ProductDetail() {
       <div className="grid gap-10 md:grid-cols-2">
         <div className="flex h-[420px] items-center justify-center rounded-md bg-soft p-10">
           <img
-            src={imageUrl(product.image)}
+            src={imageUrl(product.images?.[0]?.images ?? product.image)}
             alt={product.productName}
             className="h-full w-full object-contain"
           />

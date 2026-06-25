@@ -25,6 +25,8 @@ export interface Product {
   categoryId: number;
   categoryName: string;
   productInfoFromCart: unknown | null;
+  /** Дар ҷавоби get-product-by-id сурат дар массиви images меояд */
+  images?: { id: number; images: string }[];
 }
 
 export interface Color {

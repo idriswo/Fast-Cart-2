@@ -136,3 +136,5 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - **2026-06-24:** Анимация AOS → react-awesome-reveal (Reveal.tsx). Сипас **i18n (tj/ru/en)** пурра илова шуд: i18next + LanguageSwitcher, ҳамаи саҳифаҳо тарҷумашуда, Zod бо makeSchema(t). Build тоза.
 - **2026-06-25:** **Dark/Light mode** (ThemeToggle, var-based). Анимация **баргардонида шуд ба AOS** (классикӣ fade-up). Саҳифаҳои нави Exclusive-style: **Contact, About, Account, Cart, CheckOut**. **UserMenu** dropdown. FlashSales ҳамсатҳ, менюи категорияҳои Home калонтар. Build тоза.
 - **2026-06-25:** Тайёрии деплой — `vercel.json` (SPA rewrites) илова/push шуд, Vercel CLI насб, login (idriswo). Деплой тавассути CLI овезон шуд → бо Dashboard import тамом мешавад (env-ҳо дар PROGRESS).
+- **2026-06-25:** ProductDetail: расми маҳсулот аз массиви `images` гирифта мешавад (`product.images?.[0]?.images ?? product.image`); типҳо ва `products.ts` мутобиқ шуданд. Build тоза.
+  - ⚠️ **Кушоданашуда:** корбар гуфт «деплой кор намекунад» — аммо тафсилот (URL/хато) надод. Дар session-и оянда: URL ё хатои дақиқро пурсидан ва ислоҳ кардан.

@@ -1,6 +1,8 @@
 import api from "./axios";
 import type {
+  Brand,
   Category,
+  Color,
   PagedResponse,
   Product,
   ProductFilters,
@@ -42,5 +44,21 @@ export async function getCategories(): Promise<Category[]> {
   const { data } = await api.get<{ data: Category[] }>(
     "/Category/get-categories"
   );
+  return data?.data ?? [];
+}
+
+/** Ҳамаи брендҳо (барои филтр) */
+export async function getBrands(): Promise<Brand[]> {
+  const { data } = await api.get<{ data: Brand[] }>("/Brand/get-brands", {
+    params: { PageSize: 100 },
+  });
+  return data?.data ?? [];
+}
+
+/** Ҳамаи рангҳо (барои филтр) */
+export async function getColors(): Promise<Color[]> {
+  const { data } = await api.get<{ data: Color[] }>("/Color/get-colors", {
+    params: { PageSize: 100 },
+  });
   return data?.data ?? [];
 }

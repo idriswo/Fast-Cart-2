@@ -65,7 +65,17 @@
     "maxPricePlaceholder": "e.g. 5000",
     "upTo": "up to {{price}}",
     "notFound": "No products found 😔",
-    "clearFilters": "Clear filters"
+    "clearFilters": "Clear filters",
+    "explore": "Explore Our Products",
+    "popular": "Popular",
+    "priceLow": "Price: low to high",
+    "priceHigh": "Price: high to low",
+    "priceRange": "Price range",
+    "min": "Min",
+    "max": "Max",
+    "apply": "Apply",
+    "seeAll": "See all",
+    "moreProducts": "More Products"
   },
   "cart": {
     "empty": "Your cart is empty 🛒",
@@ -173,7 +183,18 @@
     "inStock": "In stock:",
     "pcs": "{{count}} pcs",
     "outOfStock": "Out of stock",
-    "addToCart": "Add to cart"
+    "addToCart": "Add to cart",
+    "reviews": "{{count}} Reviews",
+    "inStockLabel": "In Stock",
+    "outOfStockLabel": "Out of Stock",
+    "colours": "Colours:",
+    "size": "Size:",
+    "buyNow": "Buy Now",
+    "freeDelivery": "Free Delivery",
+    "freeDeliveryDesc": "Enter your postal code for Delivery Availability",
+    "returnDelivery": "Return Delivery",
+    "returnDeliveryDesc": "Free 30 Days Delivery Returns. Details",
+    "related": "Related Item"
   },
   "card": {
     "wishlist": "Wishlist",
@@ -269,7 +290,12 @@
     "cancel": "Cancel",
     "save": "Save Changes",
     "saved": "Changes saved! ✓",
-    "passMismatch": "New passwords do not match"
+    "passMismatch": "New passwords do not match",
+    "phone": "Phone number",
+    "dob": "Date of birth",
+    "avatar": "Photo (avatar)",
+    "loading": "Loading...",
+    "saveError": "Error while saving"
   },
   "notFound": {
     "text": "Page not found.",

@@ -41,17 +41,7 @@ export default function Home() {
               loadingC ? (
                 <div key={i} className="skeleton h-10 w-full" />
               ) : (
-                <Link
-                  key={c.id}
-                  to={`/catalog?category=${c.id}`}
-                  className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-[19px] font-medium text-neutral-700 transition-all duration-200 hover:bg-soft hover:text-brand"
-                >
-                  <span>{c.categoryName}</span>
-                  <ChevronRight
-                    size={20}
-                    className="-translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
-                  />
-                </Link>
+                <CategoryItem key={c.id} category={c} />
               )
           )}
         </aside>
@@ -129,6 +119,35 @@ export default function Home() {
         <Service icon={<Headphones />} title={t("home.supportTitle")} text={t("home.supportText")} />
         <Service icon={<ShieldCheck />} title={t("home.guaranteeTitle")} text={t("home.guaranteeText")} />
       </Reveal>
+    </div>
+  );
+}
+
+function CategoryItem({ category }: { category: Category }) {
+  const hasSub = category.subCategories?.length > 0;
+  return (
+    <div className="group/cat relative">
+      <Link
+        to={`/catalog?category=${category.id}`}
+        className="flex items-center justify-between rounded-lg px-3 py-2.5 text-[19px] font-medium text-neutral-700 transition-all duration-200 group-hover/cat:bg-soft group-hover/cat:text-brand"
+      >
+        <span>{category.categoryName}</span>
+        {hasSub && <ChevronRight size={20} className="text-brand" />}
+      </Link>
+
+      {hasSub && (
+        <div className="invisible absolute left-full top-0 z-30 ml-1 w-56 rounded-lg border bg-neutral-50 p-2 opacity-0 shadow-xl transition-all duration-200 group-hover/cat:visible group-hover/cat:opacity-100">
+          {category.subCategories.map((s) => (
+            <Link
+              key={s.id}
+              to={`/catalog?subcategory=${s.id}`}
+              className="block rounded-md px-3 py-2 text-[15px] text-neutral-600 transition-colors hover:bg-soft hover:text-brand"
+            >
+              {s.subCategoryName}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

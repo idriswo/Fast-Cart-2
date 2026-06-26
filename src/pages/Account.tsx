@@ -1,42 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useAuth } from "@/store/auth";
+import { getUserProfile, updateUserProfile } from "@/api/profile";
 
 export default function Account() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const userId = (user?.sid as string) || "";
 
   const [firstName, setFirstName] = useState(user?.name || "");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState(user?.email || "");
-  const [address, setAddress] = useState("");
-  const [curPass, setCurPass] = useState("");
-  const [newPass, setNewPass] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  // Профилро аз API мегирем
+  useEffect(() => {
+    if (!userId) return;
+    setLoading(true);
+    getUserProfile(userId)
+      .then((p) => {
+        if (!p) return;
+        setFirstName(p.firstName || user?.name || "");
+        setLastName(p.lastName || "");
+        setEmail(p.email || user?.email || "");
+        setPhone(p.phoneNumber || "");
+        setDob(p.dob ? String(p.dob).slice(0, 10) : "");
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [userId]);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPass && newPass !== confirmPass) {
-      toast.error(t("account.passMismatch"));
-      return;
+    setSaving(true);
+    try {
+      const fd = new FormData();
+      fd.append("FirstName", firstName);
+      fd.append("LastName", lastName);
+      fd.append("Email", email);
+      fd.append("PhoneNumber", phone);
+      if (dob) fd.append("Dob", dob);
+      if (image) fd.append("Image", image);
+      await updateUserProfile(fd);
+      toast.success(t("account.saved"));
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.errors?.join?.("\n") || t("account.saveError");
+      toast.error(msg);
+    } finally {
+      setSaving(false);
     }
-    toast.success(t("account.saved"));
-    setCurPass("");
-    setNewPass("");
-    setConfirmPass("");
   };
 
   const reset = () => {
     setFirstName(user?.name || "");
     setLastName("");
     setEmail(user?.email || "");
-    setAddress("");
-    setCurPass("");
-    setNewPass("");
-    setConfirmPass("");
+    setPhone("");
+    setDob("");
+    setImage(null);
   };
 
   return (
@@ -86,40 +115,26 @@ export default function Account() {
 
         {/* Корти форма */}
         <form onSubmit={onSubmit} className="rounded-lg border bg-neutral-50 p-8 shadow-sm md:p-10">
-          <h2 className="text-xl font-bold text-brand">{t("account.profileTitle")}</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-brand">{t("account.profileTitle")}</h2>
+            {loading && <span className="text-sm text-neutral-400">{t("account.loading")}</span>}
+          </div>
 
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             <Field label={t("account.firstName")} value={firstName} onChange={setFirstName} />
             <Field label={t("account.lastName")} value={lastName} onChange={setLastName} />
             <Field label={t("account.emailAddress")} value={email} onChange={setEmail} type="email" />
-            <Field label={t("account.streetAddress")} value={address} onChange={setAddress} />
-          </div>
-
-          <h3 className="mt-10 font-semibold">{t("account.passwordChanges")}</h3>
-          <div className="mt-5 space-y-5">
-            <input
-              type="password"
-              placeholder={t("account.currentPassword")}
-              value={curPass}
-              onChange={(e) => setCurPass(e.target.value)}
-              className={inp}
-            />
-            <div className="grid gap-5 sm:grid-cols-2">
+            <Field label={t("account.phone")} value={phone} onChange={setPhone} />
+            <Field label={t("account.dob")} value={dob} onChange={setDob} type="date" />
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium">{t("account.avatar")}</span>
               <input
-                type="password"
-                placeholder={t("account.newPassword")}
-                value={newPass}
-                onChange={(e) => setNewPass(e.target.value)}
-                className={inp}
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+                className="block w-full text-sm text-neutral-600 file:mr-4 file:rounded-md file:border-0 file:bg-brand file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-brand-dark"
               />
-              <input
-                type="password"
-                placeholder={t("account.confirmPassword")}
-                value={confirmPass}
-                onChange={(e) => setConfirmPass(e.target.value)}
-                className={inp}
-              />
-            </div>
+            </label>
           </div>
 
           <div className="mt-10 flex items-center justify-end gap-6">
@@ -132,9 +147,10 @@ export default function Account() {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-brand px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-brand-dark active:scale-[0.99]"
+              disabled={saving}
+              className="rounded-md bg-brand px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-brand-dark active:scale-[0.99] disabled:opacity-60"
             >
-              {t("account.save")}
+              {saving ? t("account.loading") : t("account.save")}
             </button>
           </div>
         </form>
@@ -142,9 +158,6 @@ export default function Account() {
     </div>
   );
 }
-
-const inp =
-  "h-12 w-full rounded-md border border-neutral-300 bg-soft px-4 text-sm outline-none transition-colors placeholder:text-neutral-500 focus:border-neutral-900";
 
 function SideLink({ children, active }: { children: React.ReactNode; active?: boolean }) {
   return (

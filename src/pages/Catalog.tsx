@@ -1,22 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { SlidersHorizontal } from "lucide-react";
-import { getCategories, getProducts } from "@/api/products";
+import { ChevronUp } from "lucide-react";
+import { getBrands, getCategories, getColors, getProducts } from "@/api/products";
 import type { Brand, Category, Color, Product } from "@/types";
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import Reveal from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
-import { formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 9;
+type Sort = "popular" | "priceLow" | "priceHigh";
 
 export default function Catalog() {
   const { t } = useTranslation();
   const [params, setParams] = useSearchParams();
   const q = params.get("q") ?? "";
   const categoryId = params.get("category");
+  const subcategoryId = params.get("subcategory");
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -25,17 +27,24 @@ export default function Catalog() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [sort, setSort] = useState<Sort>("popular");
 
-  // filterҳои локалӣ
   const [activeCat, setActiveCat] = useState<number | null>(
     categoryId ? Number(categoryId) : null
   );
+  const [activeSub, setActiveSub] = useState<number | null>(
+    subcategoryId ? Number(subcategoryId) : null
+  );
   const [activeColor, setActiveColor] = useState<number | null>(null);
   const [activeBrand, setActiveBrand] = useState<number | null>(null);
+  const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
 
+  // Категория/бренд/ранг — як маротиба, аз endpoint-ҳои алоҳида (рӯйхати пурра)
   useEffect(() => {
     getCategories().then(setCategories).catch(() => setCategories([]));
+    getBrands().then(setBrands).catch(() => setBrands([]));
+    getColors().then(setColors).catch(() => setColors([]));
   }, []);
 
   useEffect(() => {
@@ -43,138 +52,167 @@ export default function Catalog() {
     getProducts({
       ProductName: q || undefined,
       CategoryId: activeCat ?? undefined,
+      SubcategoryId: activeSub ?? undefined,
       ColorId: activeColor ?? undefined,
       BrandId: activeBrand ?? undefined,
+      MinPrice: minPrice === "" ? undefined : Number(minPrice),
       MaxPrice: maxPrice === "" ? undefined : Number(maxPrice),
       PageNumber: page,
       PageSize: PAGE_SIZE,
     })
       .then((res) => {
-        setProducts(res.data.products ?? []);
-        setColors(res.data.colors ?? []);
-        setBrands(res.data.brands ?? []);
+        const list = res.data.products ?? [];
+        setProducts((prev) => (page === 1 ? list : [...prev, ...list]));
         setTotalPage(res.totalPage || 1);
       })
-      .catch(() => setProducts([]))
+      .catch(() => {
+        if (page === 1) setProducts([]);
+      })
       .finally(() => setLoading(false));
-  }, [q, activeCat, activeColor, activeBrand, maxPrice, page]);
+  }, [q, activeCat, activeSub, activeColor, activeBrand, minPrice, maxPrice, page]);
 
-  // ҳангоми тағйири filter ба саҳифаи 1 бармегардем
-  useEffect(() => setPage(1), [q, activeCat, activeColor, activeBrand, maxPrice]);
+  // ҳангоми тағйири ҷустуҷӯ ба саҳифаи 1
+  useEffect(() => setPage(1), [q]);
 
-  const title = useMemo(() => {
-    if (q) return t("catalog.searchResults", { q });
-    if (activeCat)
-      return categories.find((c) => c.id === activeCat)?.categoryName ?? t("catalog.title");
-    return t("catalog.allProducts");
-  }, [q, activeCat, categories, t]);
+  // синхронизатсия бо URL (аз flyout-и subcategory дар Home)
+  useEffect(() => {
+    setActiveSub(subcategoryId ? Number(subcategoryId) : null);
+    if (subcategoryId) setActiveCat(null);
+    setPage(1);
+  }, [subcategoryId]);
+
+  const reset1 = () => setPage(1);
+  const changeCat = (v: number | null) => {
+    setActiveCat(v);
+    setActiveSub(null);
+    reset1();
+  };
+
+  const sorted = useMemo(() => {
+    const price = (p: Product) => (p.hasDiscount ? p.discountPrice : p.price);
+    if (sort === "priceLow") return [...products].sort((a, b) => price(a) - price(b));
+    if (sort === "priceHigh") return [...products].sort((a, b) => price(b) - price(a));
+    return products;
+  }, [products, sort]);
 
   const resetFilters = () => {
     setActiveCat(null);
+    setActiveSub(null);
     setActiveColor(null);
     setActiveBrand(null);
+    setMinPrice("");
     setMaxPrice("");
     setParams({});
+    reset1();
   };
 
   return (
-    <div className="container-x py-10">
-      <h1 className="mb-8 text-2xl font-bold md:text-3xl">{title}</h1>
+    <div className="container-x py-8">
+      {/* Breadcrumb */}
+      <nav className="mb-8 flex items-center gap-2 text-sm text-neutral-500">
+        <Link to="/" className="transition-colors hover:text-brand">
+          {t("nav.home")}
+        </Link>
+        <span>/</span>
+        <span className="text-neutral-900">
+          {q ? t("catalog.searchResults", { q }) : t("catalog.explore")}
+        </span>
+      </nav>
 
       <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Filterҳо */}
+        {/* Sidebar */}
         <aside className="w-full shrink-0 lg:w-64">
-          <div className="mb-6 flex items-center justify-between">
-            <span className="flex items-center gap-2 font-semibold">
-              <SlidersHorizontal size={18} /> {t("catalog.filters")}
-            </span>
-            <button
-              onClick={resetFilters}
-              className="text-sm text-brand hover:underline"
-            >
-              {t("catalog.clear")}
-            </button>
-          </div>
-
-          <FilterGroup title={t("catalog.category")}>
-            <button
-              onClick={() => setActiveCat(null)}
-              className={pill(activeCat === null)}
-            >
-              {t("catalog.all")}
-            </button>
+          {/* Category */}
+          <Section title={t("catalog.category")}>
+            <CatRow active={activeCat === null} onClick={() => changeCat(null)}>
+              {t("catalog.allProducts")}
+            </CatRow>
             {categories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => setActiveCat(c.id)}
-                className={pill(activeCat === c.id)}
-              >
+              <CatRow key={c.id} active={activeCat === c.id} onClick={() => changeCat(c.id)}>
                 {c.categoryName}
-              </button>
+              </CatRow>
             ))}
-          </FilterGroup>
+          </Section>
 
+          {/* Brands */}
           {brands.length > 0 && (
-            <FilterGroup title={t("catalog.brand")}>
-              <button
-                onClick={() => setActiveBrand(null)}
-                className={pill(activeBrand === null)}
-              >
-                {t("catalog.all")}
-              </button>
+            <Section title={t("catalog.brand")}>
               {brands.map((b) => (
-                <button
+                <CheckRow
                   key={b.id}
-                  onClick={() => setActiveBrand(b.id)}
-                  className={pill(activeBrand === b.id)}
+                  checked={activeBrand === b.id}
+                  onChange={() => {
+                    setActiveBrand((cur) => (cur === b.id ? null : b.id));
+                    reset1();
+                  }}
                 >
                   {b.brandName}
-                </button>
+                </CheckRow>
               ))}
-            </FilterGroup>
+            </Section>
           )}
 
+          {/* Color */}
           {colors.length > 0 && (
-            <FilterGroup title={t("catalog.color")}>
-              <button
-                onClick={() => setActiveColor(null)}
-                className={pill(activeColor === null)}
-              >
-                {t("catalog.all")}
-              </button>
+            <Section title={t("catalog.color")}>
               {colors.map((c) => (
-                <button
+                <CheckRow
                   key={c.id}
-                  onClick={() => setActiveColor(c.id)}
-                  className={pill(activeColor === c.id)}
+                  checked={activeColor === c.id}
+                  onChange={() => {
+                    setActiveColor((cur) => (cur === c.id ? null : c.id));
+                    reset1();
+                  }}
                 >
                   {c.colorName}
-                </button>
+                </CheckRow>
               ))}
-            </FilterGroup>
+            </Section>
           )}
 
-          <FilterGroup title={t("catalog.maxPrice")}>
-            <input
-              type="number"
-              value={maxPrice}
-              onChange={(e) =>
-                setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))
-              }
-              placeholder={t("catalog.maxPricePlaceholder")}
-              className="h-9 w-full rounded-md border px-3 text-sm outline-none"
-            />
-            {maxPrice !== "" && (
-              <p className="mt-2 text-xs text-neutral-500">
-                {t("catalog.upTo", { price: formatPrice(Number(maxPrice)) })}
-              </p>
-            )}
-          </FilterGroup>
+          {/* Price range */}
+          <Section title={t("catalog.priceRange")}>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                placeholder={t("catalog.min")}
+                className="h-10 w-full rounded-md border border-neutral-300 bg-neutral-50 px-3 text-sm outline-none focus:border-neutral-900"
+              />
+              <input
+                type="number"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                placeholder={t("catalog.max")}
+                className="h-10 w-full rounded-md border border-neutral-300 bg-neutral-50 px-3 text-sm outline-none focus:border-neutral-900"
+              />
+            </div>
+            <button
+              onClick={reset1}
+              className="mt-4 w-full rounded-md border border-brand py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+            >
+              {t("catalog.apply")}
+            </button>
+          </Section>
         </aside>
 
-        {/* Рӯйхати маҳсулот */}
+        {/* Маҳсулот */}
         <section className="flex-1">
-          {loading ? (
+          {/* Sort bar */}
+          <div className="mb-6 flex justify-end">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as Sort)}
+              className="h-11 rounded-md border border-neutral-300 bg-neutral-50 px-4 text-sm outline-none focus:border-neutral-900"
+            >
+              <option value="popular">{t("catalog.popular")}</option>
+              <option value="priceLow">{t("catalog.priceLow")}</option>
+              <option value="priceHigh">{t("catalog.priceHigh")}</option>
+            </select>
+          </div>
+
+          {loading && page === 1 ? (
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
@@ -190,26 +228,20 @@ export default function Catalog() {
           ) : (
             <>
               <Reveal className="grid grid-cols-2 gap-6 md:grid-cols-3">
-                {products.map((p) => (
+                {sorted.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
               </Reveal>
 
-              {totalPage > 1 && (
-                <div className="mt-10 flex justify-center gap-2">
-                  {Array.from({ length: totalPage }, (_, i) => i + 1).map((n) => (
-                    <button
-                      key={n}
-                      onClick={() => setPage(n)}
-                      className={`h-10 w-10 rounded-md text-sm ${
-                        page === n
-                          ? "bg-brand text-white"
-                          : "border hover:bg-neutral-50"
-                      }`}
-                    >
-                      {n}
-                    </button>
-                  ))}
+              {page < totalPage && (
+                <div className="mt-12 flex justify-center">
+                  <button
+                    onClick={() => setPage((p) => p + 1)}
+                    disabled={loading}
+                    className="rounded-md bg-brand px-10 py-3.5 font-medium text-white transition-all hover:bg-brand-dark active:scale-[0.99] disabled:opacity-60"
+                  >
+                    {loading ? "…" : t("catalog.moreProducts")}
+                  </button>
                 </div>
               )}
             </>
@@ -220,24 +252,57 @@ export default function Catalog() {
   );
 }
 
-function FilterGroup({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(true);
   return (
-    <div className="mb-6 border-b pb-6">
-      <h4 className="mb-3 font-medium">{title}</h4>
-      <div className="flex flex-wrap gap-2">{children}</div>
+    <div className="border-b py-5">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between font-semibold"
+      >
+        {title}
+        <ChevronUp size={18} className={cn("transition-transform", !open && "rotate-180")} />
+      </button>
+      {open && <div className="mt-4">{children}</div>}
     </div>
   );
 }
 
-const pill = (active: boolean) =>
-  `rounded-full border px-3 py-1.5 text-sm transition-colors ${
-    active
-      ? "border-brand bg-brand text-white"
-      : "border-neutral-300 hover:border-neutral-900"
-  }`;
+function CatRow({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "block w-full py-1.5 text-left text-sm transition-colors",
+        active ? "font-medium text-brand" : "text-neutral-600 hover:text-brand"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+function CheckRow({
+  checked,
+  onChange,
+  children,
+}: {
+  checked: boolean;
+  onChange: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="flex cursor-pointer items-center gap-3 py-1.5 text-sm text-neutral-600">
+      <input type="checkbox" checked={checked} onChange={onChange} className="h-4 w-4 accent-brand" />
+      {children}
+    </label>
+  );
+}

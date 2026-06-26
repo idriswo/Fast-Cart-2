@@ -97,19 +97,32 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
 - [x] **UserMenu** (`components/UserMenu.tsx`): икони корбар → dropdown (Профил / Баромадан)
 - Эзоҳ: Contact/About/Account аз `Simple.tsx` ба файлҳои алоҳида кӯчиданд (Simple = танҳо NotFound)
 
-### Phase 7 — Деплой 🚧 (дар ҷараён)
-- [x] `vercel.json` илова шуд — SPA rewrites (ҳамаи routeҳо → index.html), commit/push шуд
-- [x] Vercel CLI насб шуд; корбар `vercel login` кард (GitHub: idriswo)
-- [ ] **Деплой нотамом** — CLI дар ин муҳит интерактивӣ овезон мешавад (whoami/link/deploy
-      ҳеҷ output намедиҳанд). Роҳи тавсияшаванда: **Vercel Dashboard import**.
-- **Барои тамом кардан (қадами навбатӣ):**
-  1. https://vercel.com/new → Import репозиторияи `idriswo/Fast-Cart-2`
-  2. Framework: Vite (худкор), Build: `npm run build`, Output: `dist`
-  3. Environment Variables гузоштан:
-     - `VITE_BASE_URL` = `https://store-api.softclub.tj`
-     - `VITE_IMAGE_URL` = `https://store-api.softclub.tj/images`
-  4. Deploy → URL-ро санҷидан (саҳифаҳо, расмҳо, i18n, dark mode)
-  - Алтернатива: дар терминали корбар `! vercel --prod` + `vercel env add ...`
+### Phase 7 — Деплой ✅ (зинда)
+- [x] `vercel.json` (SPA rewrites) + Vercel CLI + login (idriswo)
+- [x] **Деплой зинда:** https://fast-cart-2-8wg4.vercel.app (Dashboard import)
+- [x] env-ҳо дуруст: `VITE_BASE_URL`, `VITE_IMAGE_URL` дар bundle ҳастанд (тасдиқ шуд)
+- [x] Ташхис (2026-06-25): API ҷавоб медиҳад (200, products), CORS домени Vercel-ро
+      иҷозат медиҳад (`Access-Control-Allow-Origin`) — деплой солим аст
+- ⚠️ **Кушоданашуда:** корбар гуфт «modalka-ҳо bezeban (тарҷума намешаванд)» — вале
+      ҳамаи toast/меню тавассути `t()`-анд ва hardcoded матн ёфт нашуд. Тафсилот/скриншот
+      лозим: кадом модалка, кадом саҳифа.
+
+### Phase 8 — API-и амиқтар + redesign-и саҳифаҳо ✅
+- [x] **Catalog redesign:** breadcrumb, sort dropdown (Маъмул/нарх), sidebar-и
+      пӯшидашаванда (Category/Brand/Color/Price range), «More Products» (load-more)
+- [x] **Бренд/Ранг аз endpoint-ҳои алоҳида:** `getBrands()` (`/Brand/get-brands`),
+      `getColors()` (`/Color/get-colors`) — рӯйхати пурраи устувор (на аз ҷавоби маҳсулот)
+- [x] **Subcategory flyout (Home):** `get-categories` `subCategories`-ро дорад; hover →
+      менюи subcategory дар рост; клик → `/catalog?subcategory=ID` → `SubcategoryId` филтр
+- [x] **Profile ба API васл шуд:** `api/profile.ts` — `getUserProfile(id)`
+      (`/UserProfile/get-user-profile-by-id`, id = JWT `sid`) + `updateUserProfile(FormData)`
+      (`/UserProfile/update-user-profile`, multipart). Майдонҳо: Ном/Насаб/Email/Телефон/Dob/Аватар
+      - ⚠️ API майдони `Image`-ро ҳатмӣ мехоҳад — дар сайти зинда (воридшуда) санҷидан лозим
+- [x] **ProductDetail redesign (Exclusive):** галерея (thumbnail + расми калон), ситора+шарҳ+
+      In Stock, нарх, ранг, андоза (XS–XL, визуалӣ), qty+Buy Now+wishlist, Free/Return Delivery,
+      бахши «Маҳсулоти монанд» (аз ҳамон категория)
+- [x] **Багфикс — расм дар ProductDetail:** `Product.images` аслан `string[]` аст (на объект);
+      типҳо ва галерея ислоҳ шуданд. Тасдиқ: `/images/<file>` → HTTP 200
 
 ---
 
@@ -126,8 +139,9 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - i18n: react-i18next + LanguageSwitcher; ThemeToggle; UserMenu (ҳама дар Header)
 
 ## ➡️ Қадами навбатӣ
-- **Phase 7 — деплойро тамом кардан:** Vercel Dashboard import (idriswo/Fast-Cart-2),
-  env `VITE_BASE_URL` ва `VITE_IMAGE_URL` гузоштан, Deploy. (vercel.json тайёр)
+- Деплойи нав (push → Vercel худкор build мекунад) санҷидан: ProductDetail расмҳо,
+  Catalog (бренд/ранг/subcategory), Profile (GET/PUT дар сайти зинда).
+- ⚠️ Санҷидани `update-user-profile` дар сайти зинда (майдони Image ҳатмӣ).
 - Ихтиёрӣ: stagger-и сабук барои кортҳои маҳсулот; bundle code-split (chunk > 500kB).
 - Ихтиёрӣ: васл кардани API-и воқеии фармоиш (CheckOut ҳозир mock аст).
 
@@ -135,6 +149,8 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - **2026-06-24:** Phase 1 + 2. Стек гузошта шуд, API-и softclub васл шуд, каталог/детал/корзинка/wishlist сохта шуд. Build тоза.
 - **2026-06-24:** Анимация AOS → react-awesome-reveal (Reveal.tsx). Сипас **i18n (tj/ru/en)** пурра илова шуд: i18next + LanguageSwitcher, ҳамаи саҳифаҳо тарҷумашуда, Zod бо makeSchema(t). Build тоза.
 - **2026-06-25:** **Dark/Light mode** (ThemeToggle, var-based). Анимация **баргардонида шуд ба AOS** (классикӣ fade-up). Саҳифаҳои нави Exclusive-style: **Contact, About, Account, Cart, CheckOut**. **UserMenu** dropdown. FlashSales ҳамсатҳ, менюи категорияҳои Home калонтар. Build тоза.
+- **2026-06-25:** Деплой зинда (Vercel) — ташхис: API + CORS + env солим.
+- **2026-06-26:** **Catalog redesign** + бренд/ранг аз endpoint-ҳои алоҳида + **subcategory flyout** (Home) бо `SubcategoryId` филтр. **Profile ба API васл** (get/update-user-profile). **ProductDetail redesign** (Exclusive). Багфикс: расм дар ProductDetail (`images` = string[]). Build тоза.
 - **2026-06-25:** Тайёрии деплой — `vercel.json` (SPA rewrites) илова/push шуд, Vercel CLI насб, login (idriswo). Деплой тавассути CLI овезон шуд → бо Dashboard import тамом мешавад (env-ҳо дар PROGRESS).
 - **2026-06-25:** ProductDetail: расми маҳсулот аз массиви `images` гирифта мешавад (`product.images?.[0]?.images ?? product.image`); типҳо ва `products.ts` мутобиқ шуданд. Build тоза.
   - ⚠️ **Кушоданашуда:** корбар гуфт «деплой кор намекунад» — аммо тафсилот (URL/хато) надод. Дар session-и оянда: URL ё хатои дақиқро пурсидан ва ислоҳ кардан.

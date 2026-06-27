@@ -100,7 +100,7 @@ export default function ProductDetail() {
                   key={i}
                   onClick={() => setActiveImg(i)}
                   className={cn(
-                    "grid h-24 place-items-center rounded-md bg-soft p-2 transition",
+                    "grid h-24 place-items-center rounded-md bg-soft p-2 transition dark:bg-neutral-100",
                     activeImg === i ? "ring-2 ring-brand" : "hover:opacity-80"
                   )}
                 >
@@ -109,7 +109,7 @@ export default function ProductDetail() {
               ))}
             </div>
           )}
-          <div className="flex flex-1 items-center justify-center rounded-md bg-soft p-10">
+          <div className="flex flex-1 items-center justify-center rounded-md bg-soft p-10 dark:bg-neutral-100">
             <img
               src={imageUrl(gallery[activeImg] ?? gallery[0])}
               alt={product.productName}

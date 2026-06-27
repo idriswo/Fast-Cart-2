@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useAuth } from "@/store/auth";
 import { getUserProfile, updateUserProfile } from "@/api/profile";
-import { imageUrl } from "@/lib/utils";
+import { imageUrl, compressImage } from "@/lib/utils";
 
 export default function Account() {
   const { t } = useTranslation();
@@ -56,13 +56,15 @@ export default function Account() {
       fd.append("PhoneNumber", phone);
       fd.append("Dob", dob);
 
-      // Image ҳатмист. Агар расми нав набошад — расми ҷориро бармегардонем.
+      // Image ҳатмист. Расмро пеш аз фиристодан фишурда мекунем,
+      // то сервер хатои 413 (Payload Too Large) надиҳад.
       if (image) {
-        fd.append("Image", image);
+        fd.append("Image", await compressImage(image));
       } else if (existingImage) {
         const res = await fetch(imageUrl(existingImage));
         const blob = await res.blob();
-        fd.append("Image", new File([blob], existingImage, { type: blob.type }));
+        const file = new File([blob], existingImage, { type: blob.type });
+        fd.append("Image", await compressImage(file));
       } else {
         toast.error(t("account.imageRequired"));
         setSaving(false);

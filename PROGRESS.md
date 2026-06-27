@@ -143,6 +143,13 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - i18n: react-i18next + LanguageSwitcher; ThemeToggle; UserMenu (ҳама дар Header)
 
 ## ➡️ Қадами навбатӣ
+- ⚠️ **Маҳдудияти backend (тағйири username / login бо email):** Корбар мехоҳад
+  username-и login-ро иваз кунад ё бо email login кунад. Дар тарафи frontend
+  **имконнопазир** — тест шуд (2026-06-27):
+  - `update-user-profile` userName-ро **иваз намекунад** (200 медиҳад, вале нодида мегирад).
+  - `Account/login` (LoginDto) **танҳо** `userName`-ро қабул мекунад; email/phone → 400.
+  - `get-user-profiles` (барои email→username) бе auth → 401.
+  - **Ҳал:** танҳо дар backend мумкин (login бо `FindByEmail` ё endpoint-и change-username).
 - Деплойи нав (push → Vercel худкор build мекунад) санҷидан: ProductDetail расмҳо,
   Catalog (бренд/ранг/subcategory), Profile (GET/PUT дар сайти зинда).
 - ⚠️ Санҷидани `update-user-profile` дар сайти зинда (майдони Image ҳатмӣ).
@@ -159,3 +166,9 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - **2026-06-25:** Тайёрии деплой — `vercel.json` (SPA rewrites) илова/push шуд, Vercel CLI насб, login (idriswo). Деплой тавассути CLI овезон шуд → бо Dashboard import тамом мешавад (env-ҳо дар PROGRESS).
 - **2026-06-25:** ProductDetail: расми маҳсулот аз массиви `images` гирифта мешавад (`product.images?.[0]?.images ?? product.image`); типҳо ва `products.ts` мутобиқ шуданд. Build тоза.
   - ⚠️ **Кушоданашуда:** корбар гуфт «деплой кор намекунад» — аммо тафсилот (URL/хато) надод. Дар session-и оянда: URL ё хатои дақиқро пурсидан ва ислоҳ кардан.
+- **2026-06-27:** Санҷиши пурраи API-и зинда + ислоҳҳои Profile:
+  - Ҳамаи endpoint-ҳо санҷида шуданд (register/login/products/product-by-id/categories/brands/colors/profile get+update) — ҳама 200.
+  - **Profile update 413** (расми калон, ~60с) → `compressImage()` дар `lib/utils.ts` (хурд то 1024px, JPEG ≤~1MB); дар Account ба расми нав ва ҷорӣ татбиқ шуд.
+  - **FormData Content-Type** — interceptor дар `axios.ts` барои FormData Content-Type-ро ҳазф мекунад (вагарна 400).
+  - **Намоиши ном** — `profileName` ба auth store илова шуд (persist дар localStorage); UserMenu акнун firstName/lastName-и профилро нишон медиҳад (на username-и token); пас аз save ва ҳангоми бор кардани профил синхрон мешавад.
+  - **Тағйири username / login бо email** — тест шуд ва дар frontend имконнопазир будани он тасдиқ шуд (ниг. «Қадами навбатӣ»). Кори backend.

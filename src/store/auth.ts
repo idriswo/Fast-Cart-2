@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 
 const ACCESS_KEY = "token";
 const REFRESH_KEY = "refreshToken";
+const PROFILE_NAME_KEY = "profileName";
 
 export interface AuthUser {
   sid?: string;
@@ -15,10 +16,13 @@ export interface AuthUser {
 
 interface AuthState {
   user: AuthUser | null;
+  /** Номи намоишӣ аз профил (firstName lastName) — дар header ва ғ. */
+  profileName: string | null;
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
   setSession: (access: string, refresh?: string | null) => void;
+  setProfileName: (name: string | null) => void;
   logout: () => void;
 }
 
@@ -66,6 +70,7 @@ function loadInitial(): Pick<
 
 export const useAuth = create<AuthState>((set) => ({
   ...loadInitial(),
+  profileName: localStorage.getItem(PROFILE_NAME_KEY),
   setSession: (access, refresh) => {
     localStorage.setItem(ACCESS_KEY, access);
     if (refresh) localStorage.setItem(REFRESH_KEY, refresh);
@@ -76,9 +81,22 @@ export const useAuth = create<AuthState>((set) => ({
       isAuthenticated: true,
     });
   },
+  setProfileName: (name) => {
+    const trimmed = name?.trim() || null;
+    if (trimmed) localStorage.setItem(PROFILE_NAME_KEY, trimmed);
+    else localStorage.removeItem(PROFILE_NAME_KEY);
+    set({ profileName: trimmed });
+  },
   logout: () => {
     localStorage.removeItem(ACCESS_KEY);
     localStorage.removeItem(REFRESH_KEY);
-    set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+    localStorage.removeItem(PROFILE_NAME_KEY);
+    set({
+      user: null,
+      profileName: null,
+      accessToken: null,
+      refreshToken: null,
+      isAuthenticated: false,
+    });
   },
 }));

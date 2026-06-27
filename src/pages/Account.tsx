@@ -8,7 +8,7 @@ import { imageUrl, compressImage } from "@/lib/utils";
 
 export default function Account() {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, logout, setProfileName } = useAuth();
   const navigate = useNavigate();
   const userId = (user?.sid as string) || "";
 
@@ -35,6 +35,9 @@ export default function Account() {
         setPhone(p.phoneNumber || "");
         setDob(p.dob ? String(p.dob).slice(0, 10) : "");
         setExistingImage((p.image as string) || (p.imageName as string) || "");
+        // Номи намоиширо синхрон мекунем, то дар header ва ғ. нишон дода шавад
+        const full = `${p.firstName || ""} ${p.lastName || ""}`.trim();
+        if (full) setProfileName(full);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -72,6 +75,8 @@ export default function Account() {
       }
 
       await updateUserProfile(fd);
+      // Номи намоиширо фавран дар ҳама ҷо (header, меню) нав мекунем
+      setProfileName(`${firstName} ${lastName}`.trim());
       toast.success(t("account.saved"));
     } catch (err: any) {
       const msg =

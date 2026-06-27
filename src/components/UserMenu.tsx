@@ -7,7 +7,8 @@ import { useAuth } from "@/store/auth";
 
 export default function UserMenu() {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, profileName, logout } = useAuth();
+  const displayName = profileName || user?.name;
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -39,8 +40,8 @@ export default function UserMenu() {
 
       {open && (
         <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-md border bg-neutral-50 shadow-lg">
-          {user?.name && (
-            <div className="border-b px-4 py-2.5 text-sm font-semibold">{user.name}</div>
+          {displayName && (
+            <div className="border-b px-4 py-2.5 text-sm font-semibold">{displayName}</div>
           )}
           <Link
             to="/account"

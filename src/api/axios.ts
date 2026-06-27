@@ -13,6 +13,11 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(ACCESS_KEY);
     if (token) config.headers.Authorization = `Bearer ${token}`;
+    // Барои FormData (multipart) — Content-Type-ро ҳазф мекунем,
+    // то axios/браузер худаш boundary-и дурустро гузорад (вагарна 400)
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
+    }
     return config;
   },
   (error) => Promise.reject(error)

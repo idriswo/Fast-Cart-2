@@ -18,11 +18,9 @@ export async function getUserProfile(id: string): Promise<UserProfile | null> {
   return (data?.data ?? null) as UserProfile | null;
 }
 
-/** Навсозии профил — multipart/form-data (PUT) */
+/** Навсозии профил — multipart/form-data (PUT).
+ *  Content-Type-ро interceptor (axios.ts) барои FormData худкор танзим мекунад. */
 export async function updateUserProfile(form: FormData) {
-  const { data } = await api.put("/UserProfile/update-user-profile", form, {
-    // bro­узер худаш boundary-и multipart-ро мегузорад
-    headers: { "Content-Type": undefined as unknown as string },
-  });
+  const { data } = await api.put("/UserProfile/update-user-profile", form);
   return data;
 }

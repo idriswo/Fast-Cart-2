@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ChevronRight, Headphones, ShieldCheck, Truck } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper/modules";
+import "swiper/css";
 import { getCategories, getProducts } from "@/api/products";
 import type { Category, Product } from "@/types";
 import Hero from "@/components/Hero";
@@ -65,21 +68,34 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <Reveal className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6">
-            {categories.map((c) => (
-              <Link
-                key={c.id}
-                to={`/catalog?category=${c.id}`}
-                className="flex h-32 flex-col items-center justify-center gap-3 rounded-md border transition-all duration-300 hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-white hover:shadow-lg"
-              >
-                <img
-                  src={imageUrl(c.categoryImage)}
-                  alt={c.categoryName}
-                  className="h-12 w-12 object-contain"
-                />
-                <span className="text-sm font-medium">{c.categoryName}</span>
-              </Link>
-            ))}
+          <Reveal className="mt-8">
+            <Swiper
+              modules={[FreeMode]}
+              freeMode
+              spaceBetween={16}
+              slidesPerView={2.3}
+              breakpoints={{
+                480: { slidesPerView: 3.3 },
+                768: { slidesPerView: 5 },
+                1024: { slidesPerView: 6 },
+              }}
+            >
+              {categories.map((c) => (
+                <SwiperSlide key={c.id} className="h-auto">
+                  <Link
+                    to={`/catalog?category=${c.id}`}
+                    className="flex h-32 flex-col items-center justify-center gap-3 rounded-md border transition-all duration-300 hover:-translate-y-1 hover:border-brand hover:bg-brand hover:text-white hover:shadow-lg"
+                  >
+                    <img
+                      src={imageUrl(c.categoryImage)}
+                      alt={c.categoryName}
+                      className="h-12 w-12 object-contain"
+                    />
+                    <span className="text-sm font-medium">{c.categoryName}</span>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </Reveal>
         )}
       </section>

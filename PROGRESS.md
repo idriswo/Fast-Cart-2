@@ -172,3 +172,6 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
   - **FormData Content-Type** — interceptor дар `axios.ts` барои FormData Content-Type-ро ҳазф мекунад (вагарна 400).
   - **Намоиши ном** — `profileName` ба auth store илова шуд (persist дар localStorage); UserMenu акнун firstName/lastName-и профилро нишон медиҳад (на username-и token); пас аз save ва ҳангоми бор кардани профил синхрон мешавад.
   - **Тағйири username / login бо email** — тест шуд ва дар frontend имконнопазир будани он тасдиқ шуд (ниг. «Қадами навбатӣ»). Кори backend.
+- **2026-06-27:** Ислоҳҳои UI:
+  - **Dark mode — расмҳои хира** → `mix-blend-multiply` рӯи плиткаи торик расмро сиёҳ мекард; плиткаи расм дар dark mode равшан гузошта шуд (`dark:bg-neutral-100`) дар ProductCard ва ProductDetail. Расмҳо акнун 100% равшан.
+  - **Категорияҳои Home** → аз grid-и дуқатора ба **Swiper-и якқатораи swipe-шаванда** (FreeMode, responsive slidesPerView 2.3→6) табдил дода шуд.

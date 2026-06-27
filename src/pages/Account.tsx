@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useAuth } from "@/store/auth";
 import { getUserProfile, updateUserProfile } from "@/api/profile";
+import { imageUrl } from "@/lib/utils";
 
 export default function Account() {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ export default function Account() {
   const [phone, setPhone] = useState("");
   const [dob, setDob] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [existingImage, setExistingImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -32,6 +34,7 @@ export default function Account() {
         setEmail(p.email || user?.email || "");
         setPhone(p.phoneNumber || "");
         setDob(p.dob ? String(p.dob).slice(0, 10) : "");
+        setExistingImage((p.image as string) || (p.imageName as string) || "");
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -39,6 +42,11 @@ export default function Account() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // API ҳамаи майдонҳоро ҳатмӣ мехоҳад (Dob ва Image низ)
+    if (!firstName || !lastName || !email || !phone || !dob) {
+      toast.error(t("account.fillAll"));
+      return;
+    }
     setSaving(true);
     try {
       const fd = new FormData();
@@ -46,8 +54,21 @@ export default function Account() {
       fd.append("LastName", lastName);
       fd.append("Email", email);
       fd.append("PhoneNumber", phone);
-      if (dob) fd.append("Dob", dob);
-      if (image) fd.append("Image", image);
+      fd.append("Dob", dob);
+
+      // Image ҳатмист. Агар расми нав набошад — расми ҷориро бармегардонем.
+      if (image) {
+        fd.append("Image", image);
+      } else if (existingImage) {
+        const res = await fetch(imageUrl(existingImage));
+        const blob = await res.blob();
+        fd.append("Image", new File([blob], existingImage, { type: blob.type }));
+      } else {
+        toast.error(t("account.imageRequired"));
+        setSaving(false);
+        return;
+      }
+
       await updateUserProfile(fd);
       toast.success(t("account.saved"));
     } catch (err: any) {

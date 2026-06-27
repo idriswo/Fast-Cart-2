@@ -123,6 +123,10 @@ axios (interceptors) • React Hook Form + Zod • lucide-react • react-router
       бахши «Маҳсулоти монанд» (аз ҳамон категория)
 - [x] **Багфикс — расм дар ProductDetail:** `Product.images` аслан `string[]` аст (на объект);
       типҳо ва галерея ислоҳ шуданд. Тасдиқ: `/images/<file>` → HTTP 200
+- [x] **Багфикс — Profile update 400:** API ҳамаи 6 майдонро ҳатмӣ мехоҳад
+      (FirstName, LastName, Email, PhoneNumber, **Dob**, **Image**). Ҳалли: ҳама ҳатмӣ
+      фиристода мешаванд; агар расми нав набошад, расми ҷории профил аз сервер гирифта
+      ва ҳамчун Image баргардонида мешавад. (Дар сайти зинда санҷидан лозим)
 
 ---
 
@@ -151,6 +155,7 @@ UserMenu dropdown. Responsive. `container-x` = 1400px. Build тоза.
 - **2026-06-25:** **Dark/Light mode** (ThemeToggle, var-based). Анимация **баргардонида шуд ба AOS** (классикӣ fade-up). Саҳифаҳои нави Exclusive-style: **Contact, About, Account, Cart, CheckOut**. **UserMenu** dropdown. FlashSales ҳамсатҳ, менюи категорияҳои Home калонтар. Build тоза.
 - **2026-06-25:** Деплой зинда (Vercel) — ташхис: API + CORS + env солим.
 - **2026-06-26:** **Catalog redesign** + бренд/ранг аз endpoint-ҳои алоҳида + **subcategory flyout** (Home) бо `SubcategoryId` филтр. **Profile ба API васл** (get/update-user-profile). **ProductDetail redesign** (Exclusive). Багфикс: расм дар ProductDetail (`images` = string[]). Build тоза.
+- **2026-06-27:** Багфикси **Profile update 400** — API ҳамаи майдонҳоро (Dob+Image) ҳатмӣ мехоҳад; ҳама фиристода мешаванд, расми ҷорӣ ҳангоми набудани расми нав баргардонида мешавад. Build тоза.
 - **2026-06-25:** Тайёрии деплой — `vercel.json` (SPA rewrites) илова/push шуд, Vercel CLI насб, login (idriswo). Деплой тавассути CLI овезон шуд → бо Dashboard import тамом мешавад (env-ҳо дар PROGRESS).
 - **2026-06-25:** ProductDetail: расми маҳсулот аз массиви `images` гирифта мешавад (`product.images?.[0]?.images ?? product.image`); типҳо ва `products.ts` мутобиқ шуданд. Build тоза.
   - ⚠️ **Кушоданашуда:** корбар гуфт «деплой кор намекунад» — аммо тафсилот (URL/хато) надод. Дар session-и оянда: URL ё хатои дақиқро пурсидан ва ислоҳ кардан.

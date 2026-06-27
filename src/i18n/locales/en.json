@@ -295,7 +295,9 @@
     "dob": "Date of birth",
     "avatar": "Photo (avatar)",
     "loading": "Loading...",
-    "saveError": "Error while saving"
+    "saveError": "Error while saving",
+    "fillAll": "Fill in all fields",
+    "imageRequired": "Image is required — choose a photo"
   },
   "notFound": {
     "text": "Page not found.",
